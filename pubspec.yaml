@@ -1,0 +1,26 @@
+name: ngs_run_calculator
+description: A Flutter version of NGS Run Calculator https://github.com/vogdb/ngs-run-calculator.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.2.0
+
+environment:
+  sdk: ">=2.16.1 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.0.2
+
+
+dev_dependencies:
+  test: ^1.0.0
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/seq-platform-list.json

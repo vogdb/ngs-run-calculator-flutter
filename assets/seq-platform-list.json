@@ -1,0 +1,327 @@
+[
+  {
+    "name": "NextSeq 500, Illumina",
+    "modes": [
+      {
+        "name": "Mid Output Kit",
+        "read_params": [
+          {
+            "len": 2,
+            "end": 75,
+            "yield": "19 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 150,
+            "yield": "39 Gbp"
+          }
+        ]
+      },
+      {
+        "name": "High Output Kit",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 75,
+            "yield": "30 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 75,
+            "yield": "60 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 150,
+            "yield": "120 Gbp"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "MiSeq, Illumina",
+    "modes": [
+      {
+        "name": "Reagent Kit v2",
+        "read_params": [
+          {
+            "len": 2,
+            "end": 25,
+            "yield": "0.85 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 150,
+            "yield": "5.1 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 250,
+            "yield": "8.5 Gbp"
+          }
+        ]
+      },
+      {
+        "name": "Reagent Kit v3",
+        "read_params": [
+          {
+            "len": 2,
+            "end": 75,
+            "yield": "3.8 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 300,
+            "yield": "15 Gbp"
+          }
+        ]
+      },
+      {
+        "name": "Reagent Kit v2 Micro",
+        "read_params": [
+          {
+            "len": 2,
+            "end": 150,
+            "yield": "1.2 Gbp"
+          }
+        ]
+      },
+      {
+        "name": "Reagent Kit v2 Nano",
+        "read_params": [
+          {
+            "len": 2,
+            "end": 150,
+            "yield": "0.3 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 250,
+            "yield": "0.5 Gbp"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "HiSeq 2500, Illumina",
+    "modes": [
+      {
+        "name": "HiSeq SBS V4, Single Flow Cell",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 36,
+            "yield": "72 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 50,
+            "yield": "200 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 100,
+            "yield": "400 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 125,
+            "yield": "500 Gbp"
+          }
+        ]
+      },
+      {
+        "name": "HiSeq SBS V4, Dual Flow Cell",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 36,
+            "yield": "144 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 50,
+            "yield": "400 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 100,
+            "yield": "800 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 125,
+            "yield": "1 Tbp"
+          }
+        ]
+      },
+      {
+        "name": "TruSeq SBS V3, Single Flow Cell",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 36,
+            "yield": "52 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 50,
+            "yield": "150 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 100,
+            "yield": "300 Gbp"
+          }
+        ]
+      },
+      {
+        "name": "TruSeq SBS V3, Dual Flow Cell",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 36,
+            "yield": "105 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 50,
+            "yield": "300 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 100,
+            "yield": "600 Gbp"
+          }
+        ]
+      },
+      {
+        "name": "HiSeq Rapid SBS Kit V2, Single Flow Cell",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 36,
+            "yield": "11 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 50,
+            "yield": "30 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 100,
+            "yield": "60 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 150,
+            "yield": "90 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 250,
+            "yield": "150 Gbp"
+          }
+        ]
+      },
+      {
+        "name": "HiSeq Rapid SBS Kit V2, Dual Flow Cell",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 36,
+            "yield": "22 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 50,
+            "yield": "60 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 100,
+            "yield": "120 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 150,
+            "yield": "180 Gbp"
+          },
+          {
+            "len": 2,
+            "end": 250,
+            "yield": "300 Gbp"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Ion PGM, Thermo Fisher Scientific",
+    "modes": [
+      {
+        "name": "Ion 314 Chip v2",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 200,
+            "yield": "50 Mbp"
+          },
+          {
+            "len": 1,
+            "end": 400,
+            "yield": "100 Mbp"
+          }
+        ]
+      },
+      {
+        "name": "Ion 316 Chip v2",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 200,
+            "yield": "600 Mbp"
+          },
+          {
+            "len": 1,
+            "end": 400,
+            "yield": "1 Gbp"
+          }
+        ]
+      },
+      {
+        "name": "Ion 318 Chip v2",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 200,
+            "yield": "1 Gbp"
+          },
+          {
+            "len": 1,
+            "end": 400,
+            "yield": "2 Gbp"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Ion Proton, Thermo Fisher Scientific",
+    "modes": [
+      {
+        "name": "Ion PI v3 Chip",
+        "read_params": [
+          {
+            "len": 1,
+            "end": 200,
+            "yield": "10 Gbp"
+          }
+        ]
+      }
+    ]
+  }
+]
