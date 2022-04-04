@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/seq_platform.dart';
-import '../models/selected_seq_platform.dart';
 
 class SelectSeqPlatform extends StatefulWidget {
   const SelectSeqPlatform({Key? key}) : super(key: key);

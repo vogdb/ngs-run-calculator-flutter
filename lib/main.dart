@@ -1,8 +1,8 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import './models/selected_seq_platform.dart';
+import './models/seq_platform.dart';
 import './models/samples.dart';
-import './widgets/select_seq_platform.dart';
+import './widgets/seq_platform.dart';
 import './widgets/add_sample.dart';
 
 void main() {
