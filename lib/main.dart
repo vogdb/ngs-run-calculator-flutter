@@ -1,7 +1,9 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import './models/selected_seq_platform.dart';
+import './models/samples.dart';
 import './widgets/select_seq_platform.dart';
+import './widgets/add_sample.dart';
 
 void main() {
   runApp(const CalculatorApp());
@@ -16,6 +18,8 @@ class CalculatorApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<SelectedSeqPlatform>(
               create: (context) => SelectedSeqPlatform()),
+          ChangeNotifierProvider<SelectedSamples>(
+              create: (context) => SelectedSamples()),
         ],
         child: MaterialApp(
           title: 'NGS Run Calculator',
@@ -27,6 +31,7 @@ class CalculatorApp extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               children: const <Widget>[
                 SelectSeqPlatform(),
+                AddSample(),
               ],
             ),
           ),

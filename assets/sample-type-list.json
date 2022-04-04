@@ -1,0 +1,26 @@
+[
+  {
+    "id": "AmpliconMetagenome",
+    "name": "Amplicon-based metagenome"
+  },
+  {
+    "id": "ProEukaryoticGenome",
+    "name": "Pro-/eukaryotic genome"
+  },
+  {
+    "id": "HumanExome",
+    "name": "Human exome"
+  },
+  {
+    "id": "TargetedPanel",
+    "name": "Targeted panel"
+  },
+  {
+    "id": "ProEukaryoticTranscriptome",
+    "name": "Pro-/eukaryotic transcriptome"
+  },
+  {
+    "id": "ShotgunMetagenome",
+    "name": "Shotgun metagenome"
+  }
+]

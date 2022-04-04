@@ -24,3 +24,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/seq-platform-list.json
+    - assets/sample-type-list.json
