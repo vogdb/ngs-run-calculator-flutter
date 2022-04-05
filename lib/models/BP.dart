@@ -49,7 +49,7 @@ class BP {
     return ((toPercent * roundTo2Decimal * valueBP / bp.valueBP) / roundTo2Decimal).round();
   }
 
-  String toOriginalString() {
+  String toString() {
     return value.toString() + ' ' + prefix.toUpperCase() + 'bp';
   }
 
@@ -67,6 +67,6 @@ class BP {
         return '$optimalValue ${prefixF.key}bp';
       }
     }
-    throw BpException('Could not find the optimal BP string for $valueBP, ' + toOriginalString());
+    throw BpException('Could not find the optimal BP string for $valueBP, ' + toString());
   }
 }

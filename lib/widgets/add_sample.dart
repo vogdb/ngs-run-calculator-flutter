@@ -131,10 +131,13 @@ class _AddSampleState extends State<AddSample> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Add a new sample',
-              style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4),
-              textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Text(
+                'Add a new sample',
+                style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4),
+                textAlign: TextAlign.center,
+              ),
             ),
             _buildSampleTypeField(),
             _buildSampleNumField(),

@@ -1,6 +1,8 @@
 import 'dart:convert' show json;
 import 'package:flutter/foundation.dart';
 
+import 'BP.dart';
+
 List<SeqPlatform> loadSeqPlatformList(jsonText) {
   var jsonData = json.decode(jsonText);
   return [for (var j in jsonData) SeqPlatform.fromJson(j)];
@@ -29,12 +31,12 @@ class SeqPlatformMode {
 class SeqPlatformParams {
   late final int len;
   late final int end;
-  late final String yield;
+  late final BP yield;
 
   SeqPlatformParams.fromJson(Map<String, dynamic> json) {
     len = json['len'];
     end = json['end'];
-    yield = json['yield'];
+    yield = BP(json['yield']);
   }
 }
 
