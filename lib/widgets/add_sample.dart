@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/BP.dart';
 import '../models/samples.dart';
-import './validators.dart';
+import '../common/validators.dart';
 
 class AddSample extends StatefulWidget {
   const AddSample({Key? key}) : super(key: key);
@@ -61,7 +61,6 @@ class _AddSampleState extends State<AddSample> {
       onSaved: (String? value) {
         _sample.num = int.parse(value!);
       },
-      // onSaved: (String? value){},
     );
   }
 
@@ -77,28 +76,16 @@ class _AddSampleState extends State<AddSample> {
     );
   }
 
-  Widget _buildCoverageXField() {
+  Widget _buildCoverageField({bool isCoverageX = true}) {
+    _sample.isCoverageX = isCoverageX;
     return TextFormField(
-      decoration: const InputDecoration(
-        labelText: 'Coverage X',
+      decoration: InputDecoration(
+        labelText: 'Coverage ${isCoverageX ? 'X' : 'num reads'}',
       ),
       keyboardType: TextInputType.number,
       validator: (String? value) => validateCoverage(value),
       onSaved: (String? value) {
-        _sample.coverageX = int.parse(value!);
-      },
-    );
-  }
-
-  Widget _buildCoverageNumReadsField() {
-    return TextFormField(
-      decoration: const InputDecoration(
-        labelText: 'Coverage num reads',
-      ),
-      keyboardType: TextInputType.number,
-      validator: (String? value) => validateCoverage(value),
-      onSaved: (String? value) {
-        _sample.coverageNumReads = int.parse(value!);
+        _sample.coverage = int.parse(value!);
       },
     );
   }
@@ -106,17 +93,17 @@ class _AddSampleState extends State<AddSample> {
   List<Widget> _buildFieldsOfSampleType(String? sampleType) {
     switch (sampleType) {
       case 'AmpliconMetagenome':
-        return [_buildCoverageNumReadsField()];
+        return [_buildCoverageField(isCoverageX: false)];
       case 'ProEukaryoticGenome':
-        return [_buildBpSizeField('Genome Size'), _buildCoverageXField()];
+        return [_buildBpSizeField('Genome Size'), _buildCoverageField()];
       case 'HumanExome':
-        return [_buildBpSizeField('Region Size'), _buildCoverageXField()];
+        return [_buildBpSizeField('Region Size'), _buildCoverageField()];
       case 'TargetedPanel':
-        return [_buildBpSizeField('Target Size'), _buildCoverageXField()];
+        return [_buildBpSizeField('Target Size'), _buildCoverageField()];
       case 'ProEukaryoticTranscriptome':
-        return [_buildCoverageNumReadsField()];
+        return [_buildCoverageField(isCoverageX: false)];
       case 'ShotgunMetagenome':
-        return [_buildCoverageNumReadsField()];
+        return [_buildCoverageField(isCoverageX: false)];
     }
     return [];
   }

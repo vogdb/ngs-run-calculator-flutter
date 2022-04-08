@@ -4,7 +4,9 @@ import './models/seq_platform.dart';
 import './models/samples.dart';
 import './widgets/seq_platform.dart';
 import './widgets/sample_load_bar.dart';
+import './widgets/sample_list.dart';
 import './widgets/add_sample.dart';
+import 'models/BP.dart';
 
 void main() {
   runApp(const CalculatorApp());
@@ -30,6 +32,7 @@ class CalculatorApp extends StatelessWidget {
               children: const <Widget>[
                 SelectSeqPlatform(),
                 SampleLoadBar(),
+                SampleList(),
                 AddSample(),
               ],
             ),

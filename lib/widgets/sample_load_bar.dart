@@ -1,32 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ngs_run_calculator/models/samples.dart';
 import 'package:provider/provider.dart';
-
-import '../models/BP.dart';
+import '../models/samples.dart';
 import '../models/seq_platform.dart';
+import '../common/calculate.dart';
 
-BP calcSampleLoad(Sample sample, SeqPlatformParams seqParams) {
-  int loadBP;
-  if (sample.coverageNumReads != null) {
-    loadBP = sample.num! * sample.coverageNumReads! * seqParams.len * seqParams.end;
-  } else if (sample.coverageX != null && sample.size != null) {
-    loadBP = sample.size!.valueBP * sample.num! * sample.coverageX!;
-  } else {
-    throw Exception('Sample load calculation error. Null coverages. Sample: $sample');
-  }
-  return BP('$loadBP bp');
-}
-
-int calcSamplePercent(Sample sample, SeqPlatformParams seqParams) {
-  int loadBP = calcSampleLoad(sample, seqParams).valueBP;
-  double percent = loadBP / seqParams.yield.valueBP;
-  const toPercent = 100;
-  const roundTo2Decimal = 100;
-  // manual rounding to preserve precision
-  double roundedPercent = (toPercent * roundTo2Decimal * percent).round() / roundTo2Decimal;
-  // round here to confirm the function's return type: int. Although `roundedPercent`
-  // is already int but in contained in double type.
-  return roundedPercent.round();
+int _cumulativeSum(Iterable<int> array) {
+  return array.isEmpty ? 0 : array.reduce((v, e) => v + e);
 }
 
 class SampleLoadBar extends StatelessWidget {
@@ -42,10 +21,10 @@ class SampleLoadBar extends StatelessWidget {
   Color _calcBorderColor(Iterable<int> samplesPercents) {
     var color = Colors.green;
     if (samplesPercents.isNotEmpty) {
-      var allSamplesPercent = samplesPercents.reduce((v, e) => v + e);
-      if (allSamplesPercent >= 99) {
+      var cumPercent = _cumulativeSum(samplesPercents);
+      if (cumPercent >= 99) {
         color = Colors.red;
-      } else if (allSamplesPercent >= 80) {
+      } else if (cumPercent >= 80) {
         color = Colors.orange;
       }
     }
@@ -65,30 +44,24 @@ class SampleLoadBar extends StatelessWidget {
     return Column(children: [
       Padding(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
-          child: Text('The calculated load',
+          child: Text('The calculated load of ${selectedSeqPlatform.params?.yield ?? ''}',
               style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4))),
       SizedBox(
           height: 50,
           child: DecoratedBox(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: _calcBorderColor(samplesLoads.values).withOpacity(0.3),
-                  spreadRadius: 5,
-                  blurRadius: 3,
-                )
-              ]),
-              position: DecorationPosition.background,
+              decoration: BoxDecoration(
+                border: Border.all(color: _calcBorderColor(samplesLoads.values), width: 3),
+              ),
+              position: DecorationPosition.foreground,
               child: Stack(children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [for (var e in samplesLoads.entries) _buildSingleColor(e.value, e.key)],
+                  children: [
+                    for (var e in samplesLoads.entries) _buildSingleColor(e.value, e.key),
+                    // the unloaded loadbar part
+                    _buildSingleColor(100 - _cumulativeSum(samplesLoads.values), Colors.transparent)
+                  ],
                 ),
-                Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      selectedSeqPlatform.params?.yield.toString() ?? '',
-                      style: const TextStyle(color: Colors.black),
-                    ))
               ])))
     ]);
   }

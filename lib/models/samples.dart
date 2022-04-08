@@ -23,15 +23,10 @@ class SampleType {
 class Sample {
   String? type;
   int? num;
-  int? coverageX;
-  int? coverageNumReads;
+  int? coverage;
+  bool isCoverageX = true;
   BP? size;
   late final Color color;
-
-  String get coverage {
-    var coverage = coverageX != null ? 'x$coverageX' : '';
-    return (coverageNumReads ?? coverage).toString();
-  }
 }
 
 const List<Color> _colors = [
@@ -41,8 +36,8 @@ const List<Color> _colors = [
   Color(0xffc1666b),
   Color(0xff63a332),
   Color(0xff995d81),
-  Color(0xfffff07c),
-  Color(0xff87f1ff),
+  Color(0xffffa57c),
+  Color(0xff12c1ff),
   Color(0xffffbbff),
 ];
 
@@ -62,6 +57,12 @@ class SelectedSamples extends ChangeNotifier with IterableMixin<Sample> {
 
   void remove(Sample s) {
     _samples.remove(s);
+    notifyListeners();
+  }
+
+  /// `notifyListeners` can't be used directly outside of the class, so `update` is used
+  /// to notify listeners when an item of samples is updated.
+  void update() {
     notifyListeners();
   }
 

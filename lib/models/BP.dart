@@ -43,14 +43,9 @@ class BP {
     }
   }
 
-  int percentRatio(BP bp) {
-    const toPercent = 100;
-    const roundTo2Decimal = 100;
-    return ((toPercent * roundTo2Decimal * valueBP / bp.valueBP) / roundTo2Decimal).round();
-  }
-
+  @override
   String toString() {
-    return value.toString() + ' ' + prefix.toUpperCase() + 'bp';
+    return '${_isInt(value) ? value.round() : value} ${prefix.toUpperCase()}bp';
   }
 
   String toOptimalString() {
