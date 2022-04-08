@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/BP.dart';
-import '../models/samples.dart';
+import '../models/sample.dart';
 import '../common/validators.dart';
 
 class AddSample extends StatefulWidget {

@@ -1,5 +1,5 @@
 import '../models/BP.dart';
-import '../models/samples.dart';
+import '../models/sample.dart';
 import '../models/seq_platform.dart';
 
 BP calcSampleLoad(Sample sample, SeqPlatformParams seqParams) {

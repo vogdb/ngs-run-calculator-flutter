@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ngs_run_calculator/widgets/edit_sample.dart';
 import 'package:provider/provider.dart';
-import '../models/samples.dart';
+import '../models/sample.dart';
 import '../common/calculate.dart';
 import '../models/seq_platform.dart';
 

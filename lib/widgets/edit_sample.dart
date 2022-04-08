@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/BP.dart';
 import '../common/validators.dart';
-import '../models/samples.dart';
+import '../models/sample.dart';
 
 class EditSample extends StatefulWidget {
   final Sample sample;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/samples.dart';
+import '../models/sample.dart';
 import '../models/seq_platform.dart';
 import '../common/calculate.dart';
 
