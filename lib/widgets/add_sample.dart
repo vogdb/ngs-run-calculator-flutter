@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/BP.dart';
 import '../models/sample.dart';
 import '../common/validators.dart';
+import './responsive_layout.dart';
 
 class AddSample extends StatefulWidget {
   const AddSample({Key? key}) : super(key: key);
@@ -32,62 +33,74 @@ class _AddSampleState extends State<AddSample> {
   }
 
   Widget _buildSampleTypeField() {
-    return DropdownButtonFormField(
-      isExpanded: true,
-      hint: const Text('Sample type'),
-      value: _sample.type,
-      onChanged: (String? sampleType) {
-        setState(() {
-          _sample.type = sampleType;
-        });
-      },
-      validator: (String? sampleType) => sampleType == null ? 'Select a sample type' : null,
-      items: _sampleTypeList.map((SampleType sampleType) {
-        return DropdownMenuItem(
-          child: Text(sampleType.name),
-          value: sampleType.id,
-        );
-      }).toList(),
-    );
+    return Flexible(
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 3),
+            child: DropdownButtonFormField(
+              isExpanded: true,
+              hint: const Text('Sample type'),
+              value: _sample.type,
+              onChanged: (String? sampleType) {
+                setState(() {
+                  _sample.type = sampleType;
+                });
+              },
+              validator: (String? sampleType) => sampleType == null ? 'Select a sample type' : null,
+              items: _sampleTypeList.map((SampleType sampleType) {
+                return DropdownMenuItem(
+                  child: Text(sampleType.name),
+                  value: sampleType.id,
+                );
+              }).toList(),
+            )));
   }
 
   Widget _buildSampleNumField() {
-    return TextFormField(
-      decoration: const InputDecoration(
-        labelText: 'Number of samples',
-      ),
-      keyboardType: TextInputType.number,
-      validator: (String? value) => validatePositiveInt(value),
-      onSaved: (String? value) {
-        _sample.num = int.parse(value!);
-      },
-    );
+    return Flexible(
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 3),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Number of samples',
+              ),
+              keyboardType: TextInputType.number,
+              validator: (String? value) => validatePositiveInt(value),
+              onSaved: (String? value) {
+                _sample.num = int.parse(value!);
+              },
+            )));
   }
 
   Widget _buildBpSizeField(String label) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: label,
-      ),
-      validator: (String? value) => validateBP(value),
-      onSaved: (String? value) {
-        _sample.size = BP(value!);
-      },
-    );
+    return Flexible(
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 3),
+            child: TextFormField(
+              decoration: InputDecoration(
+                labelText: label,
+              ),
+              validator: (String? value) => validateBP(value),
+              onSaved: (String? value) {
+                _sample.size = BP(value!);
+              },
+            )));
   }
 
   Widget _buildCoverageField({bool isCoverageX = true}) {
     _sample.isCoverageX = isCoverageX;
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Coverage ${isCoverageX ? 'X' : 'num reads'}',
-      ),
-      keyboardType: TextInputType.number,
-      validator: (String? value) => validateCoverage(value),
-      onSaved: (String? value) {
-        _sample.coverage = int.parse(value!);
-      },
-    );
+    return Flexible(
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 3),
+            child: TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Coverage ${isCoverageX ? 'X' : 'num reads'}',
+              ),
+              keyboardType: TextInputType.number,
+              validator: (String? value) => validateCoverage(value),
+              onSaved: (String? value) {
+                _sample.coverage = int.parse(value!);
+              },
+            )));
   }
 
   List<Widget> _buildFieldsOfSampleType(String? sampleType) {
@@ -95,11 +108,11 @@ class _AddSampleState extends State<AddSample> {
       case 'AmpliconMetagenome':
         return [_buildCoverageField(isCoverageX: false)];
       case 'ProEukaryoticGenome':
-        return [_buildBpSizeField('Genome Size'), _buildCoverageField()];
+        return [_buildCoverageField(), _buildBpSizeField('Genome Size')];
       case 'HumanExome':
-        return [_buildBpSizeField('Region Size'), _buildCoverageField()];
+        return [_buildCoverageField(), _buildBpSizeField('Region Size')];
       case 'TargetedPanel':
-        return [_buildBpSizeField('Target Size'), _buildCoverageField()];
+        return [_buildCoverageField(), _buildBpSizeField('Target Size')];
       case 'ProEukaryoticTranscriptome':
         return [_buildCoverageField(isCoverageX: false)];
       case 'ShotgunMetagenome':
@@ -111,39 +124,50 @@ class _AddSampleState extends State<AddSample> {
   @override
   Widget build(BuildContext context) {
     final selectedSamples = Provider.of<SelectedSamples>(context, listen: false);
-    return Form(
-        key: _formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: Text(
-                'Add a new sample',
-                style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            _buildSampleTypeField(),
-            _buildSampleNumField(),
-            ..._buildFieldsOfSampleType(_sample.type),
-            ElevatedButton(
-              onPressed: () {
-                // Validate returns true if the form is valid, or false otherwise.
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  selectedSamples.add(_sample);
-                  _formKey.currentState!.reset();
-                  setState(() {
-                    _sample = Sample();
-                  });
-                }
-              },
-              child: const Text('Add'),
-            ),
-          ],
-        ));
+    var fields = [
+      _buildSampleTypeField(),
+      _buildSampleNumField(),
+      ..._buildFieldsOfSampleType(_sample.type),
+    ];
+
+    return Padding(
+        padding: const EdgeInsets.only(top: 30),
+        child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              children: [
+                Text(
+                  'Add a new sample',
+                  style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4),
+                  textAlign: TextAlign.center,
+                ),
+                ResponsiveLayout(
+                    wide: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: fields,
+                    ),
+                    narrow: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: fields,
+                    )),
+                ElevatedButton(
+                  onPressed: () {
+                    // Validate returns true if the form is valid, or false otherwise.
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      selectedSamples.add(_sample);
+                      _formKey.currentState!.reset();
+                      setState(() {
+                        _sample = Sample();
+                      });
+                    }
+                  },
+                  child: const Text('Add'),
+                ),
+              ],
+            )));
   }
 }

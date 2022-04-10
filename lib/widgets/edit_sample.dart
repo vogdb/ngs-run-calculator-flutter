@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/BP.dart';
 import '../common/validators.dart';
 import '../models/sample.dart';
+import './responsive_layout.dart';
 
 class EditSample extends StatefulWidget {
   final Sample sample;
@@ -21,73 +22,103 @@ class _EditSampleState extends State<EditSample> {
     var sample = widget.sample;
     var selectedSamples = Provider.of<SelectedSamples>(context, listen: false);
 
-    return AlertDialog(
-      content: Form(
-        key: _formKey,
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Edit a sample of ${sample.type}',
-                textAlign: TextAlign.center,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Number of samples'),
-                initialValue: '${sample.num}',
-                keyboardType: TextInputType.number,
-                validator: (String? value) => validatePositiveInt(value),
-                onSaved: (String? value) {
-                  setState(() {
-                    sample.num = int.parse(value!);
-                  });
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Coverage ${sample.isCoverageX ? 'X' : 'num reads'}',
-                ),
-                initialValue: '${sample.coverage}',
-                keyboardType: TextInputType.number,
-                validator: (String? value) => validateCoverage(value),
-                onSaved: (String? value) {
-                  setState(() {
-                    sample.coverage = int.parse(value!);
-                  });
-                },
-              ),
-              if (sample.size != null)
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Size'),
-                  initialValue: '${sample.size}',
-                  validator: (String? value) => validateBP(value),
-                  onSaved: (String? value) {
-                    setState(() {
-                      sample.size = BP(value!);
-                    });
-                  },
-                ),
-              ElevatedButton(
-                onPressed: () {
-                  // Validate returns true if the form is valid, or false otherwise.
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    _formKey.currentState!.reset();
-                    selectedSamples.update();
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: const Text('Save'),
-              ),
-            ]),
-      ),
-      actions: [
-        TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
+    Widget _buildSampleNumField() {
+      return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 3),
+          child: TextFormField(
+            decoration: const InputDecoration(labelText: 'Number of samples'),
+            initialValue: '${sample.num}',
+            keyboardType: TextInputType.number,
+            validator: (String? value) => validatePositiveInt(value),
+            onSaved: (String? value) {
+              setState(() {
+                sample.num = int.parse(value!);
+              });
             },
-            child: const Text('Cancel')),
-      ],
-    );
+          ));
+    }
+
+    Widget _buildSampleCoverageField() {
+      return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 3),
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Coverage ${sample.isCoverageX ? 'X' : 'num reads'}',
+            ),
+            initialValue: '${sample.coverage}',
+            keyboardType: TextInputType.number,
+            validator: (String? value) => validateCoverage(value),
+            onSaved: (String? value) {
+              setState(() {
+                sample.coverage = int.parse(value!);
+              });
+            },
+          ));
+    }
+
+    Widget _buildSampleSizeField() {
+      return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 3),
+          child: TextFormField(
+            decoration: const InputDecoration(labelText: 'Size'),
+            initialValue: '${sample.size}',
+            validator: (String? value) => validateBP(value),
+            onSaved: (String? value) {
+              setState(() {
+                sample.size = BP(value!);
+              });
+            },
+          ));
+    }
+
+    return Dialog(
+        child: Form(
+      key: _formKey,
+      child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Text(
+              'Edit a sample of ${sample.type}',
+              textAlign: TextAlign.center,
+              style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4),
+            ),
+            ResponsiveLayout(
+                wide: SingleChildScrollView(
+                    child: Row(children: [
+                  Flexible(child: _buildSampleNumField()),
+                  Flexible(child: _buildSampleCoverageField()),
+                  if (sample.size != null) Flexible(child: _buildSampleSizeField())
+                ])),
+                narrow: Column(
+                  children: [
+                    _buildSampleNumField(),
+                    _buildSampleCoverageField(),
+                    if (sample.size != null) _buildSampleSizeField()
+                  ],
+                )),
+            Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Validate returns true if the form is valid, or false otherwise.
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        _formKey.currentState!.reset();
+                        selectedSamples.update();
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: const Text('Save'),
+                  )
+                ])),
+          ])),
+    ));
   }
 }

@@ -1,12 +1,12 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import './models/BP.dart';
 import './models/seq_platform.dart';
 import './models/sample.dart';
 import './widgets/seq_platform.dart';
 import './widgets/sample_load_bar.dart';
 import './widgets/sample_list.dart';
 import './widgets/add_sample.dart';
-import 'models/BP.dart';
 
 void main() {
   runApp(const CalculatorApp());
