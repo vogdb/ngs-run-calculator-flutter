@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.asanin.ngs.run.calculator">
    <application
-        android:label="ngs_run_calculator"
+        android:label="NGS Run Calculator"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
