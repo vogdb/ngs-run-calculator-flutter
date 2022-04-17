@@ -15,7 +15,7 @@ class AddSample extends StatefulWidget {
 class _AddSampleState extends State<AddSample> {
   Sample _sample = Sample();
   final _formKey = GlobalKey<FormState>();
-  final List<SampleType> _sampleTypeList = [];
+  final List<String> _sampleTypeList = [];
 
   @override
   void initState() {
@@ -46,10 +46,10 @@ class _AddSampleState extends State<AddSample> {
                 });
               },
               validator: (String? sampleType) => sampleType == null ? 'Select a sample type' : null,
-              items: _sampleTypeList.map((SampleType sampleType) {
+              items: _sampleTypeList.map((String sampleType) {
                 return DropdownMenuItem(
-                  child: Text(sampleType.name),
-                  value: sampleType.id,
+                  child: Text(sampleType),
+                  value: sampleType,
                 );
               }).toList(),
             )));
@@ -105,17 +105,17 @@ class _AddSampleState extends State<AddSample> {
 
   List<Widget> _buildFieldsOfSampleType(String? sampleType) {
     switch (sampleType) {
-      case 'AmpliconMetagenome':
+      case 'Amplicon-based metagenome':
         return [_buildCoverageField(isCoverageX: false)];
-      case 'ProEukaryoticGenome':
+      case 'Pro-/eukaryotic genome':
         return [_buildCoverageField(), _buildBpSizeField('Genome Size')];
-      case 'HumanExome':
+      case 'Human exome':
         return [_buildCoverageField(), _buildBpSizeField('Region Size')];
-      case 'TargetedPanel':
+      case 'Targeted panel':
         return [_buildCoverageField(), _buildBpSizeField('Target Size')];
-      case 'ProEukaryoticTranscriptome':
+      case 'Pro-/eukaryotic transcriptome':
         return [_buildCoverageField(isCoverageX: false)];
-      case 'ShotgunMetagenome':
+      case 'Shotgun metagenome':
         return [_buildCoverageField(isCoverageX: false)];
     }
     return [];

@@ -5,19 +5,8 @@ import 'package:flutter/foundation.dart';
 
 import 'BP.dart';
 
-List<SampleType> loadSampleTypeList(jsonText) {
-  var jsonData = json.decode(jsonText);
-  return [for (var j in jsonData) SampleType.fromJson(j)];
-}
-
-class SampleType {
-  late final String id;
-  late final String name;
-
-  SampleType.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
+List<String> loadSampleTypeList(jsonText) {
+  return [for (var j in json.decode(jsonText)) j as String];
 }
 
 class Sample {
