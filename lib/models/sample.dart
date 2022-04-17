@@ -30,15 +30,12 @@ class Sample {
 }
 
 const List<Color> _colors = [
-  Color(0xff4281a4),
-  Color(0xffd4b483),
-  Color(0xff48a9a6),
-  Color(0xffc1666b),
-  Color(0xff63a332),
-  Color(0xff995d81),
+  Color(0xff6FB2D2),
+  Color(0xffEBD671),
+  Color(0xffF68989),
+  Color(0xff85C88A),
   Color(0xffffa57c),
-  Color(0xff12c1ff),
-  Color(0xffffbbff),
+  Color(0xff995d81),
 ];
 
 class SelectedSamples extends ChangeNotifier with IterableMixin<Sample> {
