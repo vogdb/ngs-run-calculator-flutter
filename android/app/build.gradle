@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.asanin.ngs.run.ngs_run_calculator"
+        applicationId "com.asanin.ngs.run.calculator"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()

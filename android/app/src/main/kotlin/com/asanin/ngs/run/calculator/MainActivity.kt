@@ -1,4 +1,4 @@
-package com.asanin.ngs.run.ngs_run_calculator
+package com.asanin.ngs.run.calculator
 
 import io.flutter.embedding.android.FlutterActivity
 
