@@ -110,7 +110,6 @@ class _EditSampleState extends State<EditSample> {
                       // Validate returns true if the form is valid, or false otherwise.
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        _formKey.currentState!.reset();
                         selectedSamples.update();
                         Navigator.of(context).pop();
                       }
