@@ -134,7 +134,6 @@ class _AddSampleState extends State<AddSample> {
         padding: const EdgeInsets.only(top: 30),
         child: Form(
             key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
                 Text(
