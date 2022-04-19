@@ -153,20 +153,22 @@ class _AddSampleState extends State<AddSample> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: fields,
                     )),
-                ElevatedButton(
-                  onPressed: () {
-                    // Validate returns true if the form is valid, or false otherwise.
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      selectedSamples.add(_sample);
-                      _formKey.currentState!.reset();
-                      setState(() {
-                        _sample = Sample();
-                      });
-                    }
-                  },
-                  child: const Text('Add'),
-                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Validate returns true if the form is valid, or false otherwise.
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          selectedSamples.add(_sample);
+                          _formKey.currentState!.reset();
+                          setState(() {
+                            _sample = Sample();
+                          });
+                        }
+                      },
+                      child: const Text('Add'),
+                    )),
               ],
             )));
   }
