@@ -9,7 +9,7 @@ class ResponsiveLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
-      return MediaQuery.of(context).size.width > 600 ? wide : narrow;
+      return MediaQuery.of(context).size.width > 800 ? wide : narrow;
     });
   }
 }

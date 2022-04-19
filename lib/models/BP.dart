@@ -4,6 +4,11 @@ class BpException implements Exception {
   final String msg;
 
   const BpException(this.msg);
+
+  @override
+  String toString() {
+    return msg;
+  }
 }
 
 final _regex = RegExp(r'^([0-9]+(?:[.,][0-9]+)?)\s*([kmgtKMGT]?)[bB][pP]$');
@@ -27,7 +32,7 @@ class BP {
   BP(String bpStr) {
     var match = _regex.firstMatch(bpStr);
     if (match == null) {
-      throw BpException('Invalid BP value: $bpStr. Valid examples: 1bp, 3 mbp, 4.2 KB.');
+      throw BpException('Invalid BP value: $bpStr. Valid examples: 10 Mbp, 3bp.');
     }
     value = double.parse(match.group(1)!.replaceFirst(',', '.'));
     prefix = match.groupCount >= 2 ? match.group(2)!.toUpperCase() : '';

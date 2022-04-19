@@ -78,6 +78,7 @@ class _AddSampleState extends State<AddSample> {
             child: TextFormField(
               decoration: InputDecoration(
                 labelText: label,
+                hintText: '100Kbp',
               ),
               validator: (String? value) => validateBP(value),
               onSaved: (String? value) {
