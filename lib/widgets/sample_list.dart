@@ -87,7 +87,15 @@ class _SampleListState extends State<SampleList> {
   Widget build(BuildContext context) {
     var seqParams = Provider.of<SelectedSeqPlatform>(context).params;
     if (seqParams == null) {
-      return const SizedBox.shrink();
+      return SizedBox(
+          height: 60,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+              child: Text(
+            'Select a sequencing platform to see the sample list',
+            style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4),
+                textAlign: TextAlign.center,
+          )));
     }
 
     var samples = Provider.of<SelectedSamples>(context);
