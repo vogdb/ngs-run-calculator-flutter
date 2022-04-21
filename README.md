@@ -1,8 +1,9 @@
 ## About
 The Flutter implementation of the React app [ngs-run-calculator](https://github.com/vogdb/ngs-run-calculator). 
 
-Calculator of the sequencing platform load. It helps to compute the proper number of samples for sequencing based on some input information.
-You can try it at [vogdb.github.io/ngs-run-calculator/](https://vogdb.github.io/ngs-run-calculator/).
+Calculator of the sequencing platform load. It helps to compute the proper number of samples for
+sequencing based on some input information. You can try it [online](https://vogdb.github.io/ngs-run-calculator-flutter/)
+or as [an Android app](https://play.google.com/store/apps/details?id=com.asanin.ngs.run.calculator).
 
 ### Dictionary
 - **bp** - [base pair](https://en.wikipedia.org/wiki/Base_pair).
