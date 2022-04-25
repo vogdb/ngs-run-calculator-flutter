@@ -2,9 +2,8 @@ name: Gh-Pages
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
 
   workflow_dispatch:
 
