@@ -6,15 +6,10 @@ import '../models/seq_platform.dart';
 import './edit_sample.dart';
 import './responsive_layout.dart';
 
-class SampleList extends StatefulWidget {
+class SampleList extends StatelessWidget {
   const SampleList({Key? key}) : super(key: key);
 
-  @override
-  State<SampleList> createState() => _SampleListState();
-}
-
-class _SampleListState extends State<SampleList> {
-  Widget _buildEditButton(Sample sample) {
+  Widget _buildEditButton(BuildContext context, Sample sample) {
     return IconButton(
       icon: const Icon(Icons.edit),
       onPressed: () {
@@ -23,7 +18,7 @@ class _SampleListState extends State<SampleList> {
     );
   }
 
-  Widget _buildDeleteButton(Sample sample) {
+  Widget _buildDeleteButton(BuildContext context, Sample sample) {
     var samples = Provider.of<SelectedSamples>(context);
     return IconButton(
         icon: const Icon(Icons.delete),
@@ -41,9 +36,7 @@ class _SampleListState extends State<SampleList> {
                         child: const Text('Cancel')),
                     TextButton(
                         onPressed: () {
-                          setState(() {
-                            samples.remove(sample);
-                          });
+                          samples.remove(sample);
                           Navigator.of(context).pop();
                         },
                         child: const Text('Confirm'))
@@ -53,7 +46,7 @@ class _SampleListState extends State<SampleList> {
         });
   }
 
-  Widget _buildNarrowSample(Sample sample, SeqPlatformParams seqParams) {
+  Widget _buildNarrowSample(BuildContext context, Sample sample, SeqPlatformParams seqParams) {
     return ListTile(
       leading: Icon(Icons.circle, color: sample.color),
       title: Text('${sample.num} of ${sample.type!}'),
@@ -65,11 +58,11 @@ class _SampleListState extends State<SampleList> {
       horizontalTitleGap: 0,
       trailing: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [_buildEditButton(sample), _buildDeleteButton(sample)]),
+          children: [_buildEditButton(context, sample), _buildDeleteButton(context, sample)]),
     );
   }
 
-  TableRow _buildWideSample(Sample sample, SeqPlatformParams seqParams) {
+  TableRow _buildWideSample(BuildContext context, Sample sample, SeqPlatformParams seqParams) {
     return TableRow(children: [
       Icon(Icons.circle, color: sample.color),
       Text(sample.type!),
@@ -78,8 +71,8 @@ class _SampleListState extends State<SampleList> {
       Text(sample.size != null ? '${sample.size}' : ''),
       Text(calcSampleLoad(sample, seqParams).toOptimalString() +
           '(${calcSamplePercent(sample, seqParams)}%)'),
-      _buildEditButton(sample),
-      _buildDeleteButton(sample)
+      _buildEditButton(context, sample),
+      _buildDeleteButton(context, sample)
     ]);
   }
 
@@ -125,10 +118,10 @@ class _SampleListState extends State<SampleList> {
                     Text(''),
                     Text(''),
                   ]),
-                  for (var sample in samples) _buildWideSample(sample, seqParams)
+                  for (var sample in samples) _buildWideSample(context, sample, seqParams)
                 ]),
             narrow: Column(
-              children: [for (var sample in samples) _buildNarrowSample(sample, seqParams)],
+              children: [for (var sample in samples) _buildNarrowSample(context, sample, seqParams)],
             )));
   }
 }
