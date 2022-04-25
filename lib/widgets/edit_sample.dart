@@ -5,21 +5,14 @@ import '../common/validators.dart';
 import '../models/sample.dart';
 import './responsive_layout.dart';
 
-class EditSample extends StatefulWidget {
+class EditSample extends StatelessWidget {
   final Sample sample;
-
-  const EditSample({required this.sample, Key? key}) : super(key: key);
-
-  @override
-  _EditSampleState createState() => _EditSampleState();
-}
-
-class _EditSampleState extends State<EditSample> {
   final _formKey = GlobalKey<FormState>();
+
+  EditSample({required this.sample, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var sample = widget.sample;
     var selectedSamples = Provider.of<SelectedSamples>(context, listen: false);
 
     Widget _buildSampleNumField() {
@@ -31,9 +24,7 @@ class _EditSampleState extends State<EditSample> {
             keyboardType: TextInputType.number,
             validator: (String? value) => validatePositiveInt(value),
             onSaved: (String? value) {
-              setState(() {
-                sample.num = int.parse(value!);
-              });
+              sample.num = int.parse(value!);
             },
           ));
     }
@@ -49,9 +40,7 @@ class _EditSampleState extends State<EditSample> {
             keyboardType: TextInputType.number,
             validator: (String? value) => validateCoverage(value),
             onSaved: (String? value) {
-              setState(() {
-                sample.coverage = int.parse(value!);
-              });
+              sample.coverage = int.parse(value!);
             },
           ));
     }
@@ -64,9 +53,7 @@ class _EditSampleState extends State<EditSample> {
             initialValue: '${sample.size}',
             validator: (String? value) => validateBP(value),
             onSaved: (String? value) {
-              setState(() {
-                sample.size = BP(value!);
-              });
+              sample.size = BP(value!);
             },
           ));
     }
