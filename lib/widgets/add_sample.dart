@@ -139,7 +139,7 @@ class _AddSampleState extends State<AddSample> {
               children: [
                 Text(
                   'Add a new sample',
-                  style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4),
+                  style: Theme.of(context).textTheme.headline5,
                   textAlign: TextAlign.center,
                 ),
                 ResponsiveLayout(

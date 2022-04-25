@@ -93,7 +93,7 @@ class _SampleListState extends State<SampleList> {
             alignment: Alignment.bottomCenter,
               child: Text(
             'Select a sequencing platform to see the sample list',
-            style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4),
+            style: Theme.of(context).textTheme.headline6,
                 textAlign: TextAlign.center,
           )));
     }

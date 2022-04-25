@@ -80,7 +80,7 @@ class _EditSampleState extends State<EditSample> {
             Text(
               'Edit a sample of ${sample.type}',
               textAlign: TextAlign.center,
-              style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4),
+              style: Theme.of(context).textTheme.headline5,
             ),
             ResponsiveLayout(
                 wide: SingleChildScrollView(

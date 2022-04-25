@@ -45,7 +45,7 @@ class SampleLoadBar extends StatelessWidget {
       Padding(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
           child: Text('The calculated load of ${selectedSeqPlatform.params?.yield ?? ''}',
-              style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4))),
+              style: Theme.of(context).textTheme.headline5,)),
       SizedBox(
           height: 50,
           child: DecoratedBox(

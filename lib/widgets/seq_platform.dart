@@ -96,7 +96,7 @@ class _SelectSeqPlatformState extends State<SelectSeqPlatform> {
     return Column(children: [
       Text(
         'Select a sequencing platform and its parameters',
-        style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.4),
+        style: Theme.of(context).textTheme.headline5,
         textAlign: TextAlign.center,
       ),
       ResponsiveLayout(
