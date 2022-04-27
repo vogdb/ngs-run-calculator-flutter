@@ -51,6 +51,7 @@ class SelectedSeqPlatform extends ChangeNotifier {
     if (_platform != platform) {
       _platform = platform;
       mode = null;
+      notifyListeners();
     }
   }
 
@@ -60,6 +61,7 @@ class SelectedSeqPlatform extends ChangeNotifier {
     if (_mode != mode) {
       _mode = mode;
       params = null;
+      notifyListeners();
     }
   }
 

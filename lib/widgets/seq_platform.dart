@@ -3,50 +3,29 @@ import 'package:provider/provider.dart';
 import '../models/seq_platform.dart';
 import './responsive_layout.dart';
 
-class SelectSeqPlatform extends StatefulWidget {
+class SelectSeqPlatform extends StatelessWidget {
   const SelectSeqPlatform({Key? key}) : super(key: key);
 
-  @override
-  _SelectSeqPlatformState createState() => _SelectSeqPlatformState();
-}
-
-class _SelectSeqPlatformState extends State<SelectSeqPlatform> {
-  final List<SeqPlatform> _seqPlatformList = [];
-  late final SelectedSeqPlatform _selectedSeqPlatform;
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      _selectedSeqPlatform = Provider.of<SelectedSeqPlatform>(context, listen: false);
-    });
-    _initSeqPlatformList();
-  }
-
-  _initSeqPlatformList() async {
+  Future<List<SeqPlatform>> _initSeqPlatformList(BuildContext context) async {
     String jsonText =
-        await DefaultAssetBundle.of(context).loadString('assets/seq-platform-list.json');
-    setState(() {
-      _seqPlatformList.addAll(loadSeqPlatformList(jsonText));
-    });
+    await DefaultAssetBundle.of(context).loadString('assets/seq-platform-list.json');
+    return loadSeqPlatformList(jsonText);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var fields = [
+  List<Widget> _buildSelectFields(BuildContext context, List<SeqPlatform> seqPlatformList) {
+    var selectedSeqPlatform = Provider.of<SelectedSeqPlatform>(context);
+    return [
       Flexible(
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3),
               child: DropdownButton(
                 isExpanded: true,
                 hint: const Text('Sequencing Platform'),
-                value: _selectedSeqPlatform.platform,
+                value: selectedSeqPlatform.platform,
                 onChanged: (SeqPlatform? platform) {
-                  setState(() {
-                    _selectedSeqPlatform.platform = platform;
-                  });
+                  selectedSeqPlatform.platform = platform;
                 },
-                items: _seqPlatformList.map((SeqPlatform platform) {
+                items: seqPlatformList.map((SeqPlatform platform) {
                   return DropdownMenuItem(
                     child: Text(platform.name),
                     value: platform,
@@ -59,13 +38,11 @@ class _SelectSeqPlatformState extends State<SelectSeqPlatform> {
               child: DropdownButton(
                 isExpanded: true,
                 hint: const Text('Mode'),
-                value: _selectedSeqPlatform.mode,
+                value: selectedSeqPlatform.mode,
                 onChanged: (SeqPlatformMode? mode) {
-                  setState(() {
-                    _selectedSeqPlatform.mode = mode;
-                  });
+                  selectedSeqPlatform.mode = mode;
                 },
-                items: _selectedSeqPlatform.platform?.modes.map((SeqPlatformMode mode) {
+                items: selectedSeqPlatform.platform?.modes.map((SeqPlatformMode mode) {
                   return DropdownMenuItem(
                     child: Text(mode.name),
                     value: mode,
@@ -78,13 +55,11 @@ class _SelectSeqPlatformState extends State<SelectSeqPlatform> {
               child: DropdownButton(
                 isExpanded: true,
                 hint: const Text('Read Params'),
-                value: _selectedSeqPlatform.params,
+                value: selectedSeqPlatform.params,
                 onChanged: (SeqPlatformParams? params) {
-                  setState(() {
-                    _selectedSeqPlatform.params = params;
-                  });
+                  selectedSeqPlatform.params = params;
                 },
-                items: _selectedSeqPlatform.mode?.params.map((SeqPlatformParams params) {
+                items: selectedSeqPlatform.mode?.params.map((SeqPlatformParams params) {
                   return DropdownMenuItem(
                     child: Text(params.len.toString() + 'x' + params.end.toString()),
                     value: params,
@@ -92,22 +67,37 @@ class _SelectSeqPlatformState extends State<SelectSeqPlatform> {
                 }).toList(),
               ))),
     ];
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Column(children: [
       Text(
         'Select a sequencing platform and its parameters',
         style: Theme.of(context).textTheme.headline5,
         textAlign: TextAlign.center,
       ),
-      ResponsiveLayout(
-          wide: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: fields,
-          ),
-          narrow: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: fields))
+      FutureBuilder<List<SeqPlatform>>(
+          future: _initSeqPlatformList(context),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(child: Text('Couldn\'t load sequencing platforms!'));
+            } else if (snapshot.hasData) {
+              return ResponsiveLayout(
+                  wide: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: _buildSelectFields(context, snapshot.data!),
+                  ),
+                  narrow: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _buildSelectFields(context, snapshot.data!)));
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
     ]);
   }
 }
