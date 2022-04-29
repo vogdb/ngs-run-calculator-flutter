@@ -5,15 +5,35 @@ import 'package:flutter/foundation.dart';
 
 import 'BP.dart';
 
-List<String> loadSampleTypeList(jsonText) {
-  return [for (var j in json.decode(jsonText)) j as String];
+List<SampleType> loadSampleTypeList(jsonText) {
+  return [for (var j in json.decode(jsonText)) SampleType.fromJson(j)];
+}
+
+class SampleType {
+  late String name;
+  late bool isCoverageX;
+  String? sizeLabel;
+
+  SampleType.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    isCoverageX = json['isCoverageX'];
+    sizeLabel = json['sizeLabel'];
+  }
+
+  @override
+  String toString() => name;
+
+  @override
+  bool operator ==(Object other) => other is SampleType && other.name == name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
 
 class Sample {
-  String? type;
+  SampleType? type;
   int? num;
   int? coverage;
-  bool isCoverageX = true;
   BP? size;
   late final Color color;
 }

@@ -4,7 +4,7 @@ import '../models/seq_platform.dart';
 
 BP calcSampleLoad(Sample sample, SeqPlatformParams seqParams) {
   int loadBP;
-  if (sample.isCoverageX) {
+  if (sample.type!.isCoverageX) {
     loadBP = sample.size!.valueBP * sample.num! * sample.coverage!;
   } else {
     loadBP = sample.num! * sample.coverage! * seqParams.len * seqParams.end;

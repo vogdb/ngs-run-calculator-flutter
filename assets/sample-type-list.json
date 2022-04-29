@@ -1,8 +1,29 @@
 [
-  "Amplicon-based metagenome",
-  "Pro-/eukaryotic genome",
-  "Human exome",
-  "Targeted panel",
-  "Pro-/eukaryotic transcriptome",
-  "Shotgun metagenome"
+  {
+    "name": "Amplicon-based metagenome",
+    "isCoverageX": false
+  },
+  {
+    "name": "Pro-/eukaryotic genome",
+    "isCoverageX": true,
+    "sizeLabel": "Genome Size"
+  },
+  {
+    "name": "Human exome",
+    "isCoverageX": true,
+    "sizeLabel": "Region Size"
+  },
+  {
+    "name": "Targeted panel",
+    "isCoverageX": true,
+    "sizeLabel": "Target Size"
+  },
+  {
+    "name": "Pro-/eukaryotic transcriptome",
+    "isCoverageX": false
+  },
+  {
+    "name": "Shotgun metagenome",
+    "isCoverageX": false
+  }
 ]

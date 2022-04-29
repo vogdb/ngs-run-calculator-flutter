@@ -27,7 +27,8 @@ class SampleList extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: Text('Are you sure to delete ${sample.num} samples of ${sample.type}?'),
+                  content:
+                      Text('Are you sure to delete ${sample.num} samples of ${sample.type!.name}?'),
                   actions: [
                     TextButton(
                         onPressed: () {
@@ -49,10 +50,10 @@ class SampleList extends StatelessWidget {
   Widget _buildNarrowSample(BuildContext context, Sample sample, SeqPlatformParams seqParams) {
     return ListTile(
       leading: Icon(Icons.circle, color: sample.color),
-      title: Text('${sample.num} of ${sample.type!}'),
+      title: Text('${sample.num} of ${sample.type!.name}'),
       subtitle: Text('Output:\u{00A0}${calcSampleLoad(sample, seqParams).toOptimalString()} '
           '(${calcSamplePercent(sample, seqParams)}%), '
-          'Coverage:\u{00A0}${sample.isCoverageX ? 'x' : ''}${sample.coverage}'
+          'Coverage:\u{00A0}${sample.type!.isCoverageX ? 'x' : ''}${sample.coverage}'
           '${sample.size != null ? ', Size:\u{00A0}${sample.size}' : ''}'),
       isThreeLine: true,
       horizontalTitleGap: 0,
@@ -65,9 +66,9 @@ class SampleList extends StatelessWidget {
   TableRow _buildWideSample(BuildContext context, Sample sample, SeqPlatformParams seqParams) {
     return TableRow(children: [
       Icon(Icons.circle, color: sample.color),
-      Text(sample.type!),
+      Text(sample.type!.name),
       Text('${sample.num!}'),
-      Text('${sample.isCoverageX ? 'x' : ''}${sample.coverage}'),
+      Text('${sample.type!.isCoverageX ? 'x' : ''}${sample.coverage}'),
       Text(sample.size != null ? '${sample.size}' : ''),
       Text(calcSampleLoad(sample, seqParams).toOptimalString() +
           '(${calcSamplePercent(sample, seqParams)}%)'),
@@ -83,12 +84,12 @@ class SampleList extends StatelessWidget {
       return SizedBox(
           height: 60,
           child: Align(
-            alignment: Alignment.bottomCenter,
+              alignment: Alignment.bottomCenter,
               child: Text(
-            'Select a sequencing platform to see the sample list',
-            style: Theme.of(context).textTheme.headline6,
+                'Select a sequencing platform to see the sample list',
+                style: Theme.of(context).textTheme.headline6,
                 textAlign: TextAlign.center,
-          )));
+              )));
     }
 
     var samples = Provider.of<SelectedSamples>(context);
@@ -121,7 +122,9 @@ class SampleList extends StatelessWidget {
                   for (var sample in samples) _buildWideSample(context, sample, seqParams)
                 ]),
             narrow: Column(
-              children: [for (var sample in samples) _buildNarrowSample(context, sample, seqParams)],
+              children: [
+                for (var sample in samples) _buildNarrowSample(context, sample, seqParams)
+              ],
             )));
   }
 }

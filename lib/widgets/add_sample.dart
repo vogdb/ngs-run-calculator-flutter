@@ -15,24 +15,14 @@ class AddSample extends StatefulWidget {
 class _AddSampleState extends State<AddSample> {
   Sample _sample = Sample();
   final _formKey = GlobalKey<FormState>();
-  final List<String> _sampleTypeList = [];
 
-  @override
-  void initState() {
-    super.initState();
-
-    _initSampleTypeList();
+  Future<List<SampleType>> _initSampleTypeList() async {
+    return DefaultAssetBundle.of(context)
+        .loadString('assets/sample-type-list.json')
+        .then((jsonText) => loadSampleTypeList(jsonText));
   }
 
-  _initSampleTypeList() async {
-    String jsonText =
-        await DefaultAssetBundle.of(context).loadString('assets/sample-type-list.json');
-    setState(() {
-      _sampleTypeList.addAll(loadSampleTypeList(jsonText));
-    });
-  }
-
-  Widget _buildSampleTypeField() {
+  Widget _buildSampleTypeField(List<SampleType> sampleTypeList) {
     return Flexible(
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3),
@@ -40,16 +30,16 @@ class _AddSampleState extends State<AddSample> {
               isExpanded: true,
               hint: const Text('Sample type'),
               value: _sample.type,
-              onChanged: (String? sampleType) {
+              onChanged: (SampleType? type) {
                 setState(() {
-                  _sample.type = sampleType;
+                  _sample.type = type;
                 });
               },
-              validator: (String? sampleType) => sampleType == null ? 'Select a sample type' : null,
-              items: _sampleTypeList.map((String sampleType) {
+              validator: (SampleType? type) => type == null ? 'Select a sample type' : null,
+              items: sampleTypeList.map((SampleType type) {
                 return DropdownMenuItem(
-                  child: Text(sampleType),
-                  value: sampleType,
+                  child: Text(type.name),
+                  value: type,
                 );
               }).toList(),
             )));
@@ -71,13 +61,13 @@ class _AddSampleState extends State<AddSample> {
             )));
   }
 
-  Widget _buildBpSizeField(String label) {
+  Widget _buildBpSizeField(SampleType type) {
     return Flexible(
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3),
             child: TextFormField(
               decoration: InputDecoration(
-                labelText: label,
+                labelText: type.sizeLabel ?? 'BP Size',
                 hintText: '100Kbp',
               ),
               validator: (String? value) => validateBP(value),
@@ -87,14 +77,13 @@ class _AddSampleState extends State<AddSample> {
             )));
   }
 
-  Widget _buildCoverageField({bool isCoverageX = true}) {
-    _sample.isCoverageX = isCoverageX;
+  Widget _buildCoverageField(SampleType type) {
     return Flexible(
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3),
             child: TextFormField(
               decoration: InputDecoration(
-                labelText: 'Coverage ${isCoverageX ? 'X' : 'num reads'}',
+                labelText: 'Coverage ${type.isCoverageX ? 'X' : 'num reads'}',
               ),
               keyboardType: TextInputType.number,
               validator: (String? value) => validateCoverage(value),
@@ -104,33 +93,28 @@ class _AddSampleState extends State<AddSample> {
             )));
   }
 
-  List<Widget> _buildFieldsOfSampleType(String? sampleType) {
-    switch (sampleType) {
-      case 'Amplicon-based metagenome':
-        return [_buildCoverageField(isCoverageX: false)];
-      case 'Pro-/eukaryotic genome':
-        return [_buildCoverageField(), _buildBpSizeField('Genome Size')];
-      case 'Human exome':
-        return [_buildCoverageField(), _buildBpSizeField('Region Size')];
-      case 'Targeted panel':
-        return [_buildCoverageField(), _buildBpSizeField('Target Size')];
-      case 'Pro-/eukaryotic transcriptome':
-        return [_buildCoverageField(isCoverageX: false)];
-      case 'Shotgun metagenome':
-        return [_buildCoverageField(isCoverageX: false)];
+  List<Widget> _buildFieldsOfSampleType(SampleType? type) {
+    if (type == null) {
+      return <Widget>[];
+    } else {
+      var fields = <Widget>[_buildCoverageField(type)];
+      if (_sample.type!.isCoverageX) {
+        fields.add(_buildBpSizeField(type));
+      }
+      return fields;
     }
-    return [];
+  }
+
+  List<Widget> _buildAddFields(List<SampleType> sampleTypeList) {
+    return [
+      _buildSampleTypeField(sampleTypeList),
+      _buildSampleNumField(),
+      ..._buildFieldsOfSampleType(_sample.type),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    final selectedSamples = Provider.of<SelectedSamples>(context, listen: false);
-    var fields = [
-      _buildSampleTypeField(),
-      _buildSampleNumField(),
-      ..._buildFieldsOfSampleType(_sample.type),
-    ];
-
     return Padding(
         padding: const EdgeInsets.only(top: 30),
         child: Form(
@@ -142,17 +126,30 @@ class _AddSampleState extends State<AddSample> {
                   style: Theme.of(context).textTheme.headline5,
                   textAlign: TextAlign.center,
                 ),
-                ResponsiveLayout(
-                    wide: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: fields,
-                    ),
-                    narrow: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: fields,
-                    )),
+                FutureBuilder<List<SampleType>>(
+                    future: _initSampleTypeList(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(child: Text('Couldn\'t load sequencing platforms!'));
+                      } else if (snapshot.hasData) {
+                        var fields = _buildAddFields(snapshot.data!);
+                        return ResponsiveLayout(
+                            wide: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: fields,
+                            ),
+                            narrow: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: fields,
+                            ));
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    }),
                 Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: ElevatedButton(
@@ -160,7 +157,7 @@ class _AddSampleState extends State<AddSample> {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          selectedSamples.add(_sample);
+                          Provider.of<SelectedSamples>(context, listen: false).add(_sample);
                           _formKey.currentState!.reset();
                           setState(() {
                             _sample = Sample();

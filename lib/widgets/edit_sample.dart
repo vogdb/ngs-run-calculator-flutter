@@ -34,7 +34,7 @@ class EditSample extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 3),
           child: TextFormField(
             decoration: InputDecoration(
-              labelText: 'Coverage ${sample.isCoverageX ? 'X' : 'num reads'}',
+              labelText: 'Coverage ${sample.type!.isCoverageX ? 'X' : 'num reads'}',
             ),
             initialValue: '${sample.coverage}',
             keyboardType: TextInputType.number,
