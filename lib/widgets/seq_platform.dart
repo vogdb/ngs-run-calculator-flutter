@@ -19,6 +19,7 @@ class SelectSeqPlatform extends StatelessWidget {
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3),
               child: DropdownButton(
+                key: const Key('selectSeqPlatform'),
                 isExpanded: true,
                 hint: const Text('Sequencing Platform'),
                 value: selectedSeqPlatform.platform,
@@ -36,6 +37,7 @@ class SelectSeqPlatform extends StatelessWidget {
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3),
               child: DropdownButton(
+                key: const Key('selectSeqPlatformMode'),
                 isExpanded: true,
                 hint: const Text('Mode'),
                 value: selectedSeqPlatform.mode,
@@ -53,6 +55,7 @@ class SelectSeqPlatform extends StatelessWidget {
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3),
               child: DropdownButton(
+                key: const Key('selectSeqPlatformParams'),
                 isExpanded: true,
                 hint: const Text('Read Params'),
                 value: selectedSeqPlatform.params,

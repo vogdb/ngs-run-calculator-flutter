@@ -1,6 +1,5 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import './models/BP.dart';
 import './models/seq_platform.dart';
 import './models/sample.dart';
 import './widgets/seq_platform.dart';
@@ -23,20 +22,22 @@ class CalculatorApp extends StatelessWidget {
           ChangeNotifierProvider<SelectedSamples>(create: (context) => SelectedSamples()),
         ],
         child: MaterialApp(
-          title: 'NGS Run Calculator',
-          theme: ThemeData(brightness: Brightness.dark, primaryColor: Colors.blueGrey),
-          home: Scaffold(
-            appBar: AppBar(title: const Text('NGS Run Calculator')),
-            body: ListView(
-              padding: const EdgeInsets.all(20),
-              children: const <Widget>[
-                SelectSeqPlatform(),
-                SampleLoadBar(),
-                SampleList(),
-                AddSample(),
-              ],
-            ),
-          ),
-        ));
+            title: 'NGS Run Calculator',
+            theme: ThemeData(brightness: Brightness.dark, primaryColor: Colors.blueGrey),
+            home: Scaffold(
+              appBar: AppBar(title: const Text('NGS Run Calculator')),
+              // Cant use ListView due to https://github.com/flutter/flutter/issues/88762
+              body: SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: const <Widget>[
+                    SelectSeqPlatform(),
+                    SampleLoadBar(),
+                    SampleList(),
+                    AddSample(),
+                  ],
+                ),
+              ),
+            )));
   }
 }

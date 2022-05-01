@@ -19,6 +19,7 @@ class EditSample extends StatelessWidget {
       return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 3),
           child: TextFormField(
+            key: const Key('editSampleNum'),
             decoration: const InputDecoration(labelText: 'Number of samples'),
             initialValue: '${sample.num}',
             keyboardType: TextInputType.number,
@@ -33,6 +34,7 @@ class EditSample extends StatelessWidget {
       return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 3),
           child: TextFormField(
+            key: const Key('editSampleCoverage'),
             decoration: InputDecoration(
               labelText: 'Coverage ${sample.type!.isCoverageX ? 'X' : 'num reads'}',
             ),
@@ -49,6 +51,7 @@ class EditSample extends StatelessWidget {
       return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 3),
           child: TextFormField(
+            key: const Key('editSampleSize'),
             decoration: const InputDecoration(labelText: 'Size'),
             initialValue: '${sample.size}',
             validator: (String? value) => validateBP(value),
@@ -93,6 +96,7 @@ class EditSample extends StatelessWidget {
                     child: const Text('Cancel'),
                   ),
                   ElevatedButton(
+                    key: const Key('editSample'),
                     onPressed: () {
                       // Validate returns true if the form is valid, or false otherwise.
                       if (_formKey.currentState!.validate()) {

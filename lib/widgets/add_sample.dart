@@ -27,6 +27,7 @@ class _AddSampleState extends State<AddSample> {
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3),
             child: DropdownButtonFormField(
+              key: const Key('addSampleType'),
               isExpanded: true,
               hint: const Text('Sample type'),
               value: _sample.type,
@@ -50,6 +51,7 @@ class _AddSampleState extends State<AddSample> {
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3),
             child: TextFormField(
+              key: const Key('addSampleNum'),
               decoration: const InputDecoration(
                 labelText: 'Number of samples',
               ),
@@ -64,6 +66,7 @@ class _AddSampleState extends State<AddSample> {
   Widget _buildBpSizeField(SampleType type) {
     return Flexible(
         child: Padding(
+            key: const Key('addSampleSize'),
             padding: const EdgeInsets.symmetric(horizontal: 3),
             child: TextFormField(
               decoration: InputDecoration(
@@ -82,6 +85,7 @@ class _AddSampleState extends State<AddSample> {
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3),
             child: TextFormField(
+              key: const Key('addSampleCoverage'),
               decoration: InputDecoration(
                 labelText: 'Coverage ${type.isCoverageX ? 'X' : 'num reads'}',
               ),
@@ -130,7 +134,7 @@ class _AddSampleState extends State<AddSample> {
                     future: _initSampleTypeList(),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
-                        return const Center(child: Text('Couldn\'t load sequencing platforms!'));
+                        return const Center(child: Text('Couldn\'t load sample types!'));
                       } else if (snapshot.hasData) {
                         var fields = _buildAddFields(snapshot.data!);
                         return ResponsiveLayout(
@@ -153,6 +157,7 @@ class _AddSampleState extends State<AddSample> {
                 Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: ElevatedButton(
+                      key: const Key('addSample'),
                       onPressed: () {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {

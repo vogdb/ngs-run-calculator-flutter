@@ -12,6 +12,7 @@ class SampleList extends StatelessWidget {
   Widget _buildEditButton(BuildContext context, Sample sample) {
     return IconButton(
       icon: const Icon(Icons.edit),
+      tooltip: 'Edit ${sample.type}',
       onPressed: () {
         showDialog(context: context, builder: (BuildContext context) => EditSample(sample: sample));
       },
@@ -22,6 +23,7 @@ class SampleList extends StatelessWidget {
     var samples = Provider.of<SelectedSamples>(context);
     return IconButton(
         icon: const Icon(Icons.delete),
+        tooltip: 'Delete ${sample.type}',
         onPressed: () {
           showDialog(
               context: context,
@@ -94,6 +96,7 @@ class SampleList extends StatelessWidget {
 
     var samples = Provider.of<SelectedSamples>(context);
     return Padding(
+        key: const Key('sampleList'),
         padding: const EdgeInsets.only(top: 20),
         child: ResponsiveLayout(
             wide: Table(
