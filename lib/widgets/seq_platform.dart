@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/seq_platform.dart';
+import './em.dart';
 import './responsive_layout.dart';
 
 class SelectSeqPlatform extends StatelessWidget {
@@ -17,7 +18,7 @@ class SelectSeqPlatform extends StatelessWidget {
     return [
       Flexible(
           child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3),
+              padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
               child: DropdownButton(
                 key: const Key('selectSeqPlatform'),
                 isExpanded: true,
@@ -35,7 +36,7 @@ class SelectSeqPlatform extends StatelessWidget {
               ))),
       Flexible(
           child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3),
+              padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
               child: DropdownButton(
                 key: const Key('selectSeqPlatformMode'),
                 isExpanded: true,
@@ -53,7 +54,7 @@ class SelectSeqPlatform extends StatelessWidget {
               ))),
       Flexible(
           child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3),
+              padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
               child: DropdownButton(
                 key: const Key('selectSeqPlatformParams'),
                 isExpanded: true,

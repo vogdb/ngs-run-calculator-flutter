@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../common/calculate.dart';
 import '../models/sample.dart';
 import '../models/seq_platform.dart';
+import './em.dart';
 import './edit_sample.dart';
 import './responsive_layout.dart';
 
@@ -84,7 +85,7 @@ class SampleList extends StatelessWidget {
     var seqParams = Provider.of<SelectedSeqPlatform>(context).params;
     if (seqParams == null) {
       return SizedBox(
-          height: 60,
+          height: em(context, 5, 60),
           child: Align(
               alignment: Alignment.bottomCenter,
               child: Text(
@@ -97,7 +98,7 @@ class SampleList extends StatelessWidget {
     var samples = Provider.of<SelectedSamples>(context);
     return Padding(
         key: const Key('sampleList'),
-        padding: const EdgeInsets.only(top: 20),
+        padding: EdgeInsets.only(top: em(context, 1.4, 20)),
         child: ResponsiveLayout(
             wide: Table(
                 defaultVerticalAlignment: TableCellVerticalAlignment.middle,

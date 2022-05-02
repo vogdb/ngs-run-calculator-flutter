@@ -2,6 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import './models/seq_platform.dart';
 import './models/sample.dart';
+import './widgets/em.dart';
 import './widgets/seq_platform.dart';
 import './widgets/sample_load_bar.dart';
 import './widgets/sample_list.dart';
@@ -28,7 +29,7 @@ class CalculatorApp extends StatelessWidget {
               appBar: AppBar(title: const Text('NGS Run Calculator')),
               // Cant use ListView due to https://github.com/flutter/flutter/issues/88762
               body: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(em(context, 1, 16)),
                 child: Column(
                   children: const <Widget>[
                     SelectSeqPlatform(),

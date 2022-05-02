@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/bp.dart';
 import '../models/sample.dart';
 import '../common/validators.dart';
+import './em.dart';
 import './responsive_layout.dart';
 
 class AddSample extends StatefulWidget {
@@ -25,7 +26,7 @@ class _AddSampleState extends State<AddSample> {
   Widget _buildSampleTypeField(List<SampleType> sampleTypeList) {
     return Flexible(
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3),
+            padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
             child: DropdownButtonFormField(
               key: const Key('addSampleType'),
               isExpanded: true,
@@ -49,7 +50,7 @@ class _AddSampleState extends State<AddSample> {
   Widget _buildSampleNumField() {
     return Flexible(
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3),
+            padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
             child: TextFormField(
               key: const Key('addSampleNum'),
               decoration: const InputDecoration(
@@ -67,7 +68,7 @@ class _AddSampleState extends State<AddSample> {
     return Flexible(
         child: Padding(
             key: const Key('addSampleSize'),
-            padding: const EdgeInsets.symmetric(horizontal: 3),
+            padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
             child: TextFormField(
               decoration: InputDecoration(
                 labelText: type.sizeLabel ?? 'BP Size',
@@ -83,7 +84,7 @@ class _AddSampleState extends State<AddSample> {
   Widget _buildCoverageField(SampleType type) {
     return Flexible(
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3),
+            padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
             child: TextFormField(
               key: const Key('addSampleCoverage'),
               decoration: InputDecoration(
@@ -120,7 +121,7 @@ class _AddSampleState extends State<AddSample> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: 30),
+        padding: EdgeInsets.only(top: em(context, 2, 30)),
         child: Form(
             key: _formKey,
             child: Column(
@@ -155,7 +156,7 @@ class _AddSampleState extends State<AddSample> {
                       }
                     }),
                 Padding(
-                    padding: const EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.only(top: em(context, 1.4, 20)),
                     child: ElevatedButton(
                       key: const Key('addSample'),
                       onPressed: () {

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/sample.dart';
 import '../models/seq_platform.dart';
 import '../common/calculate.dart';
+import './em.dart';
 
 int _cumulativeSum(Iterable<int> array) {
   return array.isEmpty ? 0 : array.reduce((v, e) => v + e);
@@ -43,14 +44,18 @@ class SampleLoadBar extends StatelessWidget {
     }
     return Column(children: [
       Padding(
-          padding: const EdgeInsets.only(top: 20, bottom: 20),
-          child: Text('The calculated load of ${selectedSeqPlatform.params?.yield ?? ''}',
-              style: Theme.of(context).textTheme.headline5,)),
+          padding: EdgeInsets.symmetric(vertical: em(context, 1.4, 20)),
+          child: Text(
+            'The calculated load of ${selectedSeqPlatform.params?.yield ?? ''}',
+            style: Theme.of(context).textTheme.headline5,
+            textAlign: TextAlign.center,
+          )),
       SizedBox(
-          height: 50,
+          height: em(context, 3, 50),
           child: DecoratedBox(
               decoration: BoxDecoration(
-                border: Border.all(color: _calcBorderColor(samplesLoads.values), width: 3),
+                border: Border.all(
+                    color: _calcBorderColor(samplesLoads.values), width: em(context, 0.2, 3)),
               ),
               position: DecorationPosition.foreground,
               child: Stack(children: [

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/bp.dart';
 import '../common/validators.dart';
 import '../models/sample.dart';
+import './em.dart';
 import './responsive_layout.dart';
 
 class EditSample extends StatelessWidget {
@@ -17,7 +18,7 @@ class EditSample extends StatelessWidget {
 
     Widget _buildSampleNumField() {
       return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3),
+          padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
           child: TextFormField(
             key: const Key('editSampleNum'),
             decoration: const InputDecoration(labelText: 'Number of samples'),
@@ -32,7 +33,7 @@ class EditSample extends StatelessWidget {
 
     Widget _buildSampleCoverageField() {
       return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3),
+          padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
           child: TextFormField(
             key: const Key('editSampleCoverage'),
             decoration: InputDecoration(
@@ -49,7 +50,7 @@ class EditSample extends StatelessWidget {
 
     Widget _buildSampleSizeField() {
       return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3),
+          padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
           child: TextFormField(
             key: const Key('editSampleSize'),
             decoration: const InputDecoration(labelText: 'Size'),
@@ -65,7 +66,7 @@ class EditSample extends StatelessWidget {
         child: Form(
       key: _formKey,
       child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.all(em(context, 0.6, 10)),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
               'Edit a sample of ${sample.type}',
@@ -87,7 +88,7 @@ class EditSample extends StatelessWidget {
                   ],
                 )),
             Padding(
-                padding: const EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(top: em(context, 0.6, 10)),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                   ElevatedButton(
                     onPressed: () {
