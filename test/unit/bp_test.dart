@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:ngs_run_calculator/models/BP.dart';
+import 'package:ngs_run_calculator/models/bp.dart';
 
 void main() {
   test('Success validation', () {

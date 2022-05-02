@@ -1,7 +1,7 @@
 import 'dart:convert' show json;
 import 'package:flutter/foundation.dart';
 
-import 'BP.dart';
+import 'bp.dart';
 
 List<SeqPlatform> loadSeqPlatformList(jsonText) {
   var jsonData = json.decode(jsonText);

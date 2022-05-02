@@ -1,4 +1,4 @@
-import 'package:ngs_run_calculator/models/BP.dart';
+import '../models/bp.dart';
 
 String? validatePositiveInt(String? value) {
   if (value != null) {

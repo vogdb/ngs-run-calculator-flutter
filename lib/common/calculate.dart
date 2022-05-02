@@ -1,4 +1,4 @@
-import '../models/BP.dart';
+import '../models/bp.dart';
 import '../models/sample.dart';
 import '../models/seq_platform.dart';
 

@@ -2,8 +2,7 @@ import 'dart:collection';
 import 'dart:convert' show json;
 import 'package:flutter/material.dart' show Color;
 import 'package:flutter/foundation.dart';
-
-import 'BP.dart';
+import './bp.dart';
 
 List<SampleType> loadSampleTypeList(jsonText) {
   return [for (var j in json.decode(jsonText)) SampleType.fromJson(j)];

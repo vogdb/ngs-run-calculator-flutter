@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 
 import 'package:ngs_run_calculator/models/sample.dart';
-import 'package:ngs_run_calculator/models/BP.dart';
+import 'package:ngs_run_calculator/models/bp.dart';
 import 'package:ngs_run_calculator/models/seq_platform.dart';
 import 'package:ngs_run_calculator/common/calculate.dart';
 
