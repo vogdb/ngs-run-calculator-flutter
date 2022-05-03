@@ -1,3 +1,5 @@
+![CI Status](https://github.com/vogdb/ngs-run-calculator-flutter/actions/workflows/ci.yml/badge.svg)
+
 ## About
 The Flutter implementation of the React app [ngs-run-calculator](https://github.com/vogdb/ngs-run-calculator). 
 
