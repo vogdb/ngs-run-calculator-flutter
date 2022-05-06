@@ -79,7 +79,7 @@ class SeqPlatformParamsField extends StatelessWidget {
               },
               items: selectedSeqPlatform.mode?.params.map((SeqPlatformParams params) {
                 return DropdownMenuItem(
-                  child: Text(params.len.toString() + 'x' + params.end.toString()),
+                  child: Text(params.toString()),
                   value: params,
                 );
               }).toList(),

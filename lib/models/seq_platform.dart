@@ -16,6 +16,15 @@ class SeqPlatform {
     name = json['name'];
     modes = <SeqPlatformMode>[for (var mode in json['modes']) SeqPlatformMode.fromJson(mode)];
   }
+
+  @override
+  String toString() => name;
+
+  @override
+  bool operator ==(Object other) => other is SeqPlatform && other.name == name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
 
 class SeqPlatformMode {
@@ -26,6 +35,15 @@ class SeqPlatformMode {
     name = json['name'];
     params = [for (var rp in json['read_params']) SeqPlatformParams.fromJson(rp)];
   }
+
+  @override
+  String toString() => name;
+
+  @override
+  bool operator ==(Object other) => other is SeqPlatformMode && other.name == name;
+
+  @override
+  int get hashCode => name.hashCode;
 }
 
 class SeqPlatformParams {
@@ -38,6 +56,15 @@ class SeqPlatformParams {
     end = json['end'];
     yield = BP(json['yield']);
   }
+
+  @override
+  String toString() => '${len}x$end, $yield';
+
+  @override
+  bool operator ==(Object other) => other is SeqPlatformParams && other.yield == yield;
+
+  @override
+  int get hashCode => Object.hash(len, end, yield.hashCode);
 }
 
 class SelectedSeqPlatform extends ChangeNotifier {
