@@ -7,10 +7,13 @@ import './em.dart';
 import './edit_sample.dart';
 import './responsive_layout.dart';
 
-class SampleList extends StatelessWidget {
-  const SampleList({Key? key}) : super(key: key);
+class EditButton extends StatelessWidget {
+  final Sample sample;
 
-  Widget _buildEditButton(BuildContext context, Sample sample) {
+  const EditButton({Key? key, required this.sample}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.edit),
       tooltip: 'Edit ${sample.type}',
@@ -19,8 +22,15 @@ class SampleList extends StatelessWidget {
       },
     );
   }
+}
 
-  Widget _buildDeleteButton(BuildContext context, Sample sample) {
+class DeleteButton extends StatelessWidget {
+  final Sample sample;
+
+  const DeleteButton({Key? key, required this.sample}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     var samples = Provider.of<SelectedSamples>(context);
     return IconButton(
         icon: const Icon(Icons.delete),
@@ -49,8 +59,17 @@ class SampleList extends StatelessWidget {
               });
         });
   }
+}
 
-  Widget _buildNarrowSample(BuildContext context, Sample sample, SeqPlatformParams seqParams) {
+class NarrowSampleItem extends StatelessWidget {
+  final Sample sample;
+  final SeqPlatformParams seqParams;
+
+  const NarrowSampleItem({Key? key, required this.sample, required this.seqParams})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.circle, color: sample.color),
       title: Text('${sample.num} of ${sample.type!.name}'),
@@ -62,9 +81,13 @@ class SampleList extends StatelessWidget {
       horizontalTitleGap: 0,
       trailing: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [_buildEditButton(context, sample), _buildDeleteButton(context, sample)]),
+          children: [EditButton(sample: sample), DeleteButton(sample: sample)]),
     );
   }
+}
+
+class SampleList extends StatelessWidget {
+  const SampleList({Key? key}) : super(key: key);
 
   TableRow _buildWideSample(BuildContext context, Sample sample, SeqPlatformParams seqParams) {
     return TableRow(children: [
@@ -75,8 +98,8 @@ class SampleList extends StatelessWidget {
       Text(sample.size != null ? '${sample.size}' : ''),
       Text(calcSampleLoad(sample, seqParams).toOptimalString() +
           '(${calcSamplePercent(sample, seqParams)}%)'),
-      _buildEditButton(context, sample),
-      _buildDeleteButton(context, sample)
+      EditButton(sample: sample),
+      DeleteButton(sample: sample)
     ]);
   }
 
@@ -127,7 +150,7 @@ class SampleList extends StatelessWidget {
                 ]),
             narrow: Column(
               children: [
-                for (var sample in samples) _buildNarrowSample(context, sample, seqParams)
+                for (var sample in samples) NarrowSampleItem(sample: sample, seqParams: seqParams)
               ],
             )));
   }

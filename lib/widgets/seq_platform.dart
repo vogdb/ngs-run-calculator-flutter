@@ -4,6 +4,89 @@ import '../models/seq_platform.dart';
 import './em.dart';
 import './responsive_layout.dart';
 
+class SeqPlatformField extends StatelessWidget {
+  final List<SeqPlatform> seqPlatformList;
+
+  const SeqPlatformField({Key? key, required this.seqPlatformList}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var selectedSeqPlatform = Provider.of<SelectedSeqPlatform>(context);
+    return Flexible(
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
+            child: DropdownButton(
+              key: const Key('selectSeqPlatform'),
+              isExpanded: true,
+              hint: const Text('Sequencing Platform'),
+              value: selectedSeqPlatform.platform,
+              onChanged: (SeqPlatform? platform) {
+                selectedSeqPlatform.platform = platform;
+              },
+              items: seqPlatformList.map((SeqPlatform platform) {
+                return DropdownMenuItem(
+                  child: Text(platform.name),
+                  value: platform,
+                );
+              }).toList(),
+            )));
+  }
+}
+
+class SeqPlatformModeField extends StatelessWidget {
+  const SeqPlatformModeField({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var selectedSeqPlatform = Provider.of<SelectedSeqPlatform>(context);
+    return Flexible(
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
+            child: DropdownButton(
+              key: const Key('selectSeqPlatformMode'),
+              isExpanded: true,
+              hint: const Text('Mode'),
+              value: selectedSeqPlatform.mode,
+              onChanged: (SeqPlatformMode? mode) {
+                selectedSeqPlatform.mode = mode;
+              },
+              items: selectedSeqPlatform.platform?.modes.map((SeqPlatformMode mode) {
+                return DropdownMenuItem(
+                  child: Text(mode.name),
+                  value: mode,
+                );
+              }).toList(),
+            )));
+  }
+}
+
+class SeqPlatformParamsField extends StatelessWidget {
+  const SeqPlatformParamsField({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var selectedSeqPlatform = Provider.of<SelectedSeqPlatform>(context);
+    return Flexible(
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
+            child: DropdownButton(
+              key: const Key('selectSeqPlatformParams'),
+              isExpanded: true,
+              hint: const Text('Read Params'),
+              value: selectedSeqPlatform.params,
+              onChanged: (SeqPlatformParams? params) {
+                selectedSeqPlatform.params = params;
+              },
+              items: selectedSeqPlatform.mode?.params.map((SeqPlatformParams params) {
+                return DropdownMenuItem(
+                  child: Text(params.len.toString() + 'x' + params.end.toString()),
+                  value: params,
+                );
+              }).toList(),
+            )));
+  }
+}
+
 class SelectSeqPlatform extends StatelessWidget {
   const SelectSeqPlatform({Key? key}) : super(key: key);
 
@@ -13,63 +96,11 @@ class SelectSeqPlatform extends StatelessWidget {
         .then((jsonText) => loadSeqPlatformList(jsonText));
   }
 
-  List<Widget> _buildSelectFields(BuildContext context, List<SeqPlatform> seqPlatformList) {
-    var selectedSeqPlatform = Provider.of<SelectedSeqPlatform>(context);
+  List<Widget> _buildFields(BuildContext context, List<SeqPlatform> seqPlatformList) {
     return [
-      Flexible(
-          child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
-              child: DropdownButton(
-                key: const Key('selectSeqPlatform'),
-                isExpanded: true,
-                hint: const Text('Sequencing Platform'),
-                value: selectedSeqPlatform.platform,
-                onChanged: (SeqPlatform? platform) {
-                  selectedSeqPlatform.platform = platform;
-                },
-                items: seqPlatformList.map((SeqPlatform platform) {
-                  return DropdownMenuItem(
-                    child: Text(platform.name),
-                    value: platform,
-                  );
-                }).toList(),
-              ))),
-      Flexible(
-          child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
-              child: DropdownButton(
-                key: const Key('selectSeqPlatformMode'),
-                isExpanded: true,
-                hint: const Text('Mode'),
-                value: selectedSeqPlatform.mode,
-                onChanged: (SeqPlatformMode? mode) {
-                  selectedSeqPlatform.mode = mode;
-                },
-                items: selectedSeqPlatform.platform?.modes.map((SeqPlatformMode mode) {
-                  return DropdownMenuItem(
-                    child: Text(mode.name),
-                    value: mode,
-                  );
-                }).toList(),
-              ))),
-      Flexible(
-          child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
-              child: DropdownButton(
-                key: const Key('selectSeqPlatformParams'),
-                isExpanded: true,
-                hint: const Text('Read Params'),
-                value: selectedSeqPlatform.params,
-                onChanged: (SeqPlatformParams? params) {
-                  selectedSeqPlatform.params = params;
-                },
-                items: selectedSeqPlatform.mode?.params.map((SeqPlatformParams params) {
-                  return DropdownMenuItem(
-                    child: Text(params.len.toString() + 'x' + params.end.toString()),
-                    value: params,
-                  );
-                }).toList(),
-              ))),
+      SeqPlatformField(seqPlatformList: seqPlatformList),
+      const SeqPlatformModeField(),
+      const SeqPlatformParamsField()
     ];
   }
 
@@ -90,12 +121,12 @@ class SelectSeqPlatform extends StatelessWidget {
               return ResponsiveLayout(
                   wide: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: _buildSelectFields(context, snapshot.data!),
+                    children: _buildFields(context, snapshot.data!),
                   ),
                   narrow: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: _buildSelectFields(context, snapshot.data!)));
+                      children: _buildFields(context, snapshot.data!)));
             } else {
               return const Center(
                 child: CircularProgressIndicator(),
