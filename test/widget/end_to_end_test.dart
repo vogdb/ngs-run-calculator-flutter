@@ -31,7 +31,7 @@ void main() {
     final Finder seqPlatformParams = find.byKey(const Key('selectSeqPlatformParams'));
     await tester.tap(seqPlatformParams);
     await tester.pumpAndSettle();
-    final seqPlatformParamsItem = find.text('2x125').last;
+    final seqPlatformParamsItem = find.text('2x125, 500 Gbp').last;
     await tester.tap(seqPlatformParamsItem);
     await tester.pumpAndSettle();
 
