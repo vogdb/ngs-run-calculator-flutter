@@ -18,9 +18,9 @@ class _AddSampleState extends State<AddSample> {
   final _formKey = GlobalKey<FormState>();
 
   Future<List<SampleType>> _initSampleTypeList() async {
-    return DefaultAssetBundle.of(context)
-        .loadString('assets/sample-type-list.json')
-        .then((jsonText) => loadSampleTypeList(jsonText));
+    String jsonText =
+        await DefaultAssetBundle.of(context).loadString('assets/sample-type-list.json');
+    return loadSampleTypeList(jsonText);
   }
 
   Widget _buildSampleTypeField(List<SampleType> sampleTypeList) {

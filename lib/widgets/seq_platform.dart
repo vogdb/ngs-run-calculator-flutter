@@ -91,9 +91,9 @@ class SelectSeqPlatform extends StatelessWidget {
   const SelectSeqPlatform({Key? key}) : super(key: key);
 
   Future<List<SeqPlatform>> _initSeqPlatformList(BuildContext context) async {
-    return DefaultAssetBundle.of(context)
-        .loadString('assets/seq-platform-list.json')
-        .then((jsonText) => loadSeqPlatformList(jsonText));
+    String jsonText =
+        await DefaultAssetBundle.of(context).loadString('assets/seq-platform-list.json');
+    return loadSeqPlatformList(jsonText);
   }
 
   List<Widget> _buildFields(BuildContext context, List<SeqPlatform> seqPlatformList) {
