@@ -12,13 +12,6 @@ int _cumulativeSum(Iterable<int> array) {
 class SampleLoadBar extends StatelessWidget {
   const SampleLoadBar({Key? key}) : super(key: key);
 
-  Widget _buildSingleColor(int percent, Color color) {
-    return Expanded(
-      flex: percent.round(),
-      child: Container(color: color),
-    );
-  }
-
   Color _calcBorderColor(Iterable<int> samplesPercents) {
     var color = Colors.green;
     if (samplesPercents.isNotEmpty) {
@@ -50,24 +43,37 @@ class SampleLoadBar extends StatelessWidget {
             style: Theme.of(context).textTheme.headline5,
             textAlign: TextAlign.center,
           )),
-      SizedBox(
+      Container(
           height: em(context, 3, 50),
-          child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: _calcBorderColor(samplesLoads.values), width: em(context, 0.2, 3)),
-              ),
-              position: DecorationPosition.foreground,
-              child: Stack(children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    for (var e in samplesLoads.entries) _buildSingleColor(e.value, e.key),
-                    // the unloaded loadbar part
-                    _buildSingleColor(100 - _cumulativeSum(samplesLoads.values), Colors.transparent)
-                  ],
-                ),
-              ])))
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(em(context, 0.3, 5)),
+            border: Border.all(
+              color: _calcBorderColor(samplesLoads.values),
+              width: em(context, 0.2, 3),
+            ),
+          ),
+          child: LayoutBuilder(builder: (BuildContext lbContext, BoxConstraints constraints) {
+            return Row(
+              children: [
+                for (var e in samplesLoads.entries)
+                  AnimatedContainer(
+                    duration: const Duration(seconds: 2),
+                    color: e.key,
+                    width: 0.01 * e.value * constraints.maxWidth,
+                    alignment: Alignment.centerLeft,
+                    height: 50,
+                  ),
+                // this container is a starting point in animation of a new color
+                AnimatedContainer(
+                  duration: const Duration(seconds: 2),
+                  color: Colors.transparent,
+                  width: 0,
+                  alignment: Alignment.centerLeft,
+                  height: 50,
+                )
+              ],
+            );
+          }))
     ]);
   }
 }
