@@ -17,7 +17,9 @@ const _prefixFactors = {
   'K': 1000,
   'M': 1000 * 1000,
   'G': 1000 * 1000 * 1000,
-  'T': 1000 * 1000 * 1000 * 1000
+  'T': 1000 * 1000 * 1000 * 1000,
+  'P': 1000 * 1000 * 1000 * 1000 * 1000,
+  'E': 1000 * 1000 * 1000 * 1000 * 1000 * 1000,
 };
 
 /// Checks that `val` number is integer. For example, 2.0 is integer.
@@ -67,6 +69,6 @@ class BP {
         return '$optimalValue ${prefixF.key}bp';
       }
     }
-    throw BpException('Could not find the optimal BP string for $valueBP, ' + toString());
+    throw BpException('Could not find the optimal BP string for $valueBP, ${toString()}');
   }
 }
