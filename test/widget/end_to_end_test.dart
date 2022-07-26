@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ngs_run_calculator/main.dart' as app;
+import 'package:ngs_run_calculator/widgets/sample_list.dart' show SampleItem;
 
 void main() {
   testWidgets('end to end test', (WidgetTester tester) async {
@@ -63,9 +64,8 @@ void main() {
     await tester.pumpAndSettle();
 
     //verify that the sample has been added
-    final Finder sampleList =
-        find.descendant(of: find.byKey(const Key('sampleList')), matching: find.byType(Column));
-    expect((tester.widget(sampleList) as Column).children.length, 1);
+    final Finder sampleList = find.byKey(const Key('sampleList'));
+    expect(find.descendant(of: sampleList, matching: find.byType(SampleItem)), findsOneWidget);
     expect(
         find.descendant(
             of: sampleList, matching: find.textContaining('1000 of Amplicon-based metagenome')),
@@ -97,7 +97,7 @@ void main() {
     await tester.pumpAndSettle();
 
     //verify that the sample has been added
-    expect((tester.widget(sampleList) as Column).children.length, 2);
+    expect(find.descendant(of: sampleList, matching: find.byType(SampleItem)), findsNWidgets(2));
     expect(find.descendant(of: sampleList, matching: find.textContaining('10 of Human exome')),
         findsOneWidget);
     expect(find.descendant(of: sampleList, matching: find.textContaining('10 Gbp (2%)')),
@@ -112,7 +112,7 @@ void main() {
     await tester.pumpAndSettle();
 
     //verify that the sample has been edited
-    expect((tester.widget(sampleList) as Column).children.length, 2);
+    expect(find.descendant(of: sampleList, matching: find.byType(SampleItem)), findsNWidgets(2));
     expect(find.descendant(of: sampleList, matching: find.textContaining('10 Gbp (2%)')),
         findsNothing);
     expect(find.descendant(of: sampleList, matching: find.textContaining('20 Gbp (4%)')),
@@ -125,7 +125,7 @@ void main() {
     await tester.tap(find.bySemanticsLabel('Confirm'));
     await tester.pumpAndSettle();
     //verify that the sample has been deleted
-    expect((tester.widget(sampleList) as Column).children.length, 1);
+    expect(find.descendant(of: sampleList, matching: find.byType(SampleItem)), findsOneWidget);
     expect(
         find.descendant(
             of: sampleList, matching: find.textContaining('1000 of Amplicon-based metagenome')),

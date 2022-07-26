@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+import './edit_sample.dart';
+import './em.dart';
+import './responsive_layout.dart';
+import './seq_platform.dart';
 import '../common/calculate.dart';
 import '../models/sample.dart';
-import '../models/seq_platform.dart';
-import './em.dart';
-import './edit_sample.dart';
-import './responsive_layout.dart';
+
+class SelectedSamplesNotifier extends InheritedNotifier<SelectedSamples> {
+  const SelectedSamplesNotifier(
+      {Key? key, required SelectedSamples notifier, required Widget child})
+      : super(key: key, notifier: notifier, child: child);
+
+  static SelectedSamples of(BuildContext context, {bool listen = true}) {
+    var notifier = (listen
+            ? context.dependOnInheritedWidgetOfExactType<SelectedSamplesNotifier>()
+            : context.findAncestorWidgetOfExactType<SelectedSamplesNotifier>())
+        as SelectedSamplesNotifier;
+    return notifier.notifier!;
+  }
+}
 
 class EditButton extends StatelessWidget {
   final Sample sample;
@@ -31,7 +45,7 @@ class DeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var samples = Provider.of<SelectedSamples>(context);
+    var samples = SelectedSamplesNotifier.of(context, listen: false);
     return IconButton(
         icon: const Icon(Icons.delete),
         tooltip: 'Delete ${sample.type}',
@@ -63,13 +77,17 @@ class DeleteButton extends StatelessWidget {
 
 class NarrowSampleItem extends StatelessWidget {
   final Sample sample;
-  final SeqPlatformParams seqParams;
+  final bool isRemoved;
 
-  const NarrowSampleItem({Key? key, required this.sample, required this.seqParams})
+  const NarrowSampleItem({Key? key, required this.sample, this.isRemoved = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var seqParams = SelectedSeqPlatformNotifier.of(context).params;
+    if (seqParams == null) {
+      return const ListTile();
+    }
     return ListTile(
       leading: Icon(Icons.circle, color: sample.color),
       title: Text('${sample.num} of ${sample.type!.name}'),
@@ -81,31 +99,66 @@ class NarrowSampleItem extends StatelessWidget {
       horizontalTitleGap: 0,
       trailing: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [EditButton(sample: sample), DeleteButton(sample: sample)]),
+          children: isRemoved ? [] : [EditButton(sample: sample), DeleteButton(sample: sample)]),
     );
+  }
+}
+
+class WideSampleItem extends StatelessWidget {
+  final Sample sample;
+  final bool isRemoved;
+
+  const WideSampleItem({Key? key, required this.sample, this.isRemoved = false}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var seqParams = SelectedSeqPlatformNotifier.of(context).params;
+    if (seqParams == null) {
+      return const ListTile();
+    }
+    return Row(children: [
+      Expanded(flex: 1, child: Icon(Icons.circle, color: sample.color)),
+      Expanded(flex: 3, child: Text('${sample.num} of ${sample.type!.name}')),
+      Expanded(
+          flex: 3,
+          child: Text('\u{00A0}${calcSampleLoad(sample, seqParams).toOptimalString()} '
+              '(${calcSamplePercent(sample, seqParams)}%)')),
+      Expanded(
+          flex: 2,
+          child: Text('\u{00A0}${sample.type!.isCoverageX ? 'x' : ''}${sample.coverage}')),
+      if (sample.size != null) Expanded(flex: 2, child: Text('\u{00A0}${sample.size}')),
+      if (!isRemoved) Expanded(flex: 1, child: EditButton(sample: sample)),
+      if (!isRemoved) Expanded(flex: 1, child: DeleteButton(sample: sample)),
+    ]);
+  }
+}
+
+class SampleItem extends StatelessWidget {
+  final Sample sample;
+  final bool isRemoved;
+
+  const SampleItem({Key? key, required this.sample, this.isRemoved = false}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveLayout(
+        wide: WideSampleItem(
+          sample: sample,
+          isRemoved: isRemoved,
+        ),
+        narrow: NarrowSampleItem(
+          sample: sample,
+          isRemoved: isRemoved,
+        ));
   }
 }
 
 class SampleList extends StatelessWidget {
   const SampleList({Key? key}) : super(key: key);
 
-  TableRow _buildWideSample(BuildContext context, Sample sample, SeqPlatformParams seqParams) {
-    return TableRow(children: [
-      Icon(Icons.circle, color: sample.color),
-      Text(sample.type!.name),
-      Text('${sample.num!}'),
-      Text('${sample.type!.isCoverageX ? 'x' : ''}${sample.coverage}'),
-      Text(sample.size != null ? '${sample.size}' : ''),
-      Text(calcSampleLoad(sample, seqParams).toOptimalString() +
-          '(${calcSamplePercent(sample, seqParams)}%)'),
-      EditButton(sample: sample),
-      DeleteButton(sample: sample)
-    ]);
-  }
-
   @override
   Widget build(BuildContext context) {
-    var seqParams = Provider.of<SelectedSeqPlatform>(context).params;
+    var seqParams = SelectedSeqPlatformNotifier.of(context).params;
     if (seqParams == null) {
       return SizedBox(
           height: em(context, 5, 60),
@@ -118,40 +171,31 @@ class SampleList extends StatelessWidget {
               )));
     }
 
-    var samples = Provider.of<SelectedSamples>(context);
+    var samples = SelectedSamplesNotifier.of(context);
     return Padding(
         key: const Key('sampleList'),
         padding: EdgeInsets.only(top: em(context, 1.4, 20)),
-        child: ResponsiveLayout(
-            wide: Table(
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                columnWidths: const {
-                  0: FlexColumnWidth(5),
-                  1: FlexColumnWidth(30),
-                  2: FlexColumnWidth(10),
-                  3: FlexColumnWidth(10),
-                  4: FlexColumnWidth(10),
-                  5: FlexColumnWidth(15),
-                  6: FlexColumnWidth(10),
-                  7: FlexColumnWidth(10),
-                },
-                children: [
-                  const TableRow(children: [
-                    Text(''),
-                    Text('Type'),
-                    Text('Number'),
-                    Text('Coverage'),
-                    Text('Size'),
-                    Text('Output'),
-                    Text(''),
-                    Text(''),
-                  ]),
-                  for (var sample in samples) _buildWideSample(context, sample, seqParams)
-                ]),
-            narrow: Column(
-              children: [
-                for (var sample in samples) NarrowSampleItem(sample: sample, seqParams: seqParams)
+        child: Column(children: [
+          if (ResponsiveLayout.isWide(context) && samples.isNotEmpty)
+            Row(
+              children: const [
+                Expanded(flex: 1, child: SizedBox.shrink()),
+                Expanded(flex: 3, child: Text('Sample')),
+                Expanded(flex: 3, child: Text('Output:')),
+                Expanded(flex: 2, child: Text('Coverage:')),
+                Expanded(flex: 2, child: Text('Size:')),
+                Expanded(flex: 2, child: SizedBox.shrink()),
               ],
-            )));
+            ),
+          AnimatedList(
+            key: SelectedSamplesNotifier.of(context, listen: false).listKey,
+            initialItemCount: samples.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index, animation) {
+              return FadeTransition(
+                  opacity: animation, child: SampleItem(sample: samples.elementAt(index)));
+            },
+          )
+        ]));
   }
 }

@@ -1,7 +1,8 @@
 import 'dart:collection';
 import 'dart:convert' show json;
-import 'package:flutter/material.dart' show Color;
-import 'package:flutter/foundation.dart';
+
+import 'package:flutter/material.dart';
+
 import './bp.dart';
 
 List<SampleType> loadSampleTypeList(jsonText) {
@@ -46,8 +47,24 @@ const List<Color> _colors = [
   Color(0xff995d81),
 ];
 
+typedef RemovedItemBuilder = Widget Function(
+    Sample sample, BuildContext context, Animation<double> animation);
+
 class SelectedSamples extends ChangeNotifier with IterableMixin<Sample> {
+  SelectedSamples({
+    required RemovedItemBuilder removedItemBuilder,
+    required GlobalKey<AnimatedListState> listKey,
+  }) : _removedItemBuilder = removedItemBuilder,
+        _listKey = listKey;
+
   final List<Sample> _samples = [];
+  final GlobalKey<AnimatedListState> _listKey;
+  final RemovedItemBuilder _removedItemBuilder;
+
+  @override
+  int get length => _samples.length;
+
+  GlobalKey<AnimatedListState> get listKey => _listKey;
 
   void add(Sample s) {
     if (_samples.isEmpty) {
@@ -56,12 +73,22 @@ class SelectedSamples extends ChangeNotifier with IterableMixin<Sample> {
       var lastColor = _samples.last.color;
       s.color = _colors[(_colors.lastIndexOf(lastColor) + 1) % _colors.length];
     }
+    final int index = _samples.length;
     _samples.add(s);
+    _listKey.currentState!.insertItem(index, duration: const Duration(seconds: 1));
     notifyListeners();
   }
 
   void remove(Sample s) {
+    final int index = _samples.indexOf(s);
     _samples.remove(s);
+    _listKey.currentState!.removeItem(
+      index,
+          (BuildContext context, Animation<double> animation) {
+        return _removedItemBuilder(s, context, animation);
+      },
+      duration: const Duration(seconds: 1),
+    );
     notifyListeners();
   }
 

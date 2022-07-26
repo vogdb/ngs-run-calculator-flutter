@@ -58,7 +58,7 @@ class BP {
   String toOptimalString() {
     final mgntdOrder = (math.log(valueBP) / math.ln10).round();
     if (mgntdOrder < 1) {
-      return valueBP.toString() + 'bp';
+      return '${valueBP}bp';
     }
     final mgntd = math.pow(10, mgntdOrder);
     for (var prefixF in _prefixFactors.entries) {

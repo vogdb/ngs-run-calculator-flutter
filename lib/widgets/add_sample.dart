@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/bp.dart';
-import '../models/sample.dart';
-import '../common/validators.dart';
+
 import './em.dart';
 import './responsive_layout.dart';
+import './sample_list.dart';
+import '../common/validators.dart';
+import '../models/bp.dart';
+import '../models/sample.dart';
 
 class AddSample extends StatefulWidget {
   const AddSample({Key? key}) : super(key: key);
 
   @override
-  _AddSampleState createState() => _AddSampleState();
+  AddSampleState createState() => AddSampleState();
 }
 
-class _AddSampleState extends State<AddSample> {
+class AddSampleState extends State<AddSample> {
   Sample _sample = Sample();
   final _formKey = GlobalKey<FormState>();
 
@@ -40,8 +41,8 @@ class _AddSampleState extends State<AddSample> {
               validator: (SampleType? type) => type == null ? 'Select a sample type' : null,
               items: sampleTypeList.map((SampleType type) {
                 return DropdownMenuItem(
-                  child: Text(type.name),
                   value: type,
+                  child: Text(type.name),
                 );
               }).toList(),
             )));
@@ -163,7 +164,7 @@ class _AddSampleState extends State<AddSample> {
                         // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          Provider.of<SelectedSamples>(context, listen: false).add(_sample);
+                          SelectedSamplesNotifier.of(context, listen: false).add(_sample);
                           _formKey.currentState!.reset();
                           setState(() {
                             _sample = Sample();

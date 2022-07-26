@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/seq_platform.dart';
+
 import './em.dart';
 import './responsive_layout.dart';
+import '../models/seq_platform.dart';
+
+class SelectedSeqPlatformNotifier extends InheritedNotifier<SelectedSeqPlatform> {
+  const SelectedSeqPlatformNotifier(
+      {Key? key, required SelectedSeqPlatform notifier, required Widget child})
+      : super(key: key, notifier: notifier, child: child);
+
+  static SelectedSeqPlatform of(BuildContext context, {bool listen = true}) {
+    var notifier = (listen
+        ? context.dependOnInheritedWidgetOfExactType<SelectedSeqPlatformNotifier>()
+        : context.findAncestorWidgetOfExactType<SelectedSeqPlatformNotifier>())
+    as SelectedSeqPlatformNotifier;
+    return notifier.notifier!;
+  }
+}
 
 class SeqPlatformField extends StatelessWidget {
   final List<SeqPlatform> seqPlatformList;
@@ -11,7 +25,7 @@ class SeqPlatformField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var selectedSeqPlatform = Provider.of<SelectedSeqPlatform>(context);
+    var selectedSeqPlatform = SelectedSeqPlatformNotifier.of(context);
     return Flexible(
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
@@ -25,8 +39,8 @@ class SeqPlatformField extends StatelessWidget {
               },
               items: seqPlatformList.map((SeqPlatform platform) {
                 return DropdownMenuItem(
-                  child: Text(platform.name),
                   value: platform,
+                  child: Text(platform.name),
                 );
               }).toList(),
             )));
@@ -38,7 +52,7 @@ class SeqPlatformModeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var selectedSeqPlatform = Provider.of<SelectedSeqPlatform>(context);
+    var selectedSeqPlatform = SelectedSeqPlatformNotifier.of(context);
     return Flexible(
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
@@ -52,8 +66,8 @@ class SeqPlatformModeField extends StatelessWidget {
               },
               items: selectedSeqPlatform.platform?.modes.map((SeqPlatformMode mode) {
                 return DropdownMenuItem(
-                  child: Text(mode.name),
                   value: mode,
+                  child: Text(mode.name),
                 );
               }).toList(),
             )));
@@ -65,7 +79,7 @@ class SeqPlatformParamsField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var selectedSeqPlatform = Provider.of<SelectedSeqPlatform>(context);
+    var selectedSeqPlatform = SelectedSeqPlatformNotifier.of(context);
     return Flexible(
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: em(context, 0.2, 3)),
@@ -79,8 +93,8 @@ class SeqPlatformParamsField extends StatelessWidget {
               },
               items: selectedSeqPlatform.mode?.params.map((SeqPlatformParams params) {
                 return DropdownMenuItem(
-                  child: Text(params.toString()),
                   value: params,
+                  child: Text(params.toString()),
                 );
               }).toList(),
             )));

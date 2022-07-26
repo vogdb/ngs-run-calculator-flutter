@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/sample.dart';
-import '../models/seq_platform.dart';
-import '../common/calculate.dart';
+
 import './em.dart';
+import './sample_list.dart' show SelectedSamplesNotifier;
+import './seq_platform.dart' show SelectedSeqPlatformNotifier;
+import '../common/calculate.dart';
+import '../models/sample.dart' show Sample;
+import '../models/seq_platform.dart' show SeqPlatformParams;
 
 int _cumulativeSum(Iterable<int> array) {
   return array.isEmpty ? 0 : array.reduce((v, e) => v + e);
@@ -25,15 +27,30 @@ class SampleLoadBar extends StatelessWidget {
     return color;
   }
 
+  Map<Sample, int> _calcSampleWidths(samples, SeqPlatformParams params) {
+    var sampleWidths = <Sample, int>{};
+    var percentSum = 0;
+    for (var sample in samples) {
+      if (percentSum >= 100) {
+        // if the sum of previous samples percents >= 100 then set the current sample width
+        // to 0 because it won't be visible
+        sampleWidths[sample] = 0;
+      } else {
+        var percent = calcSamplePercent(sample, params);
+        sampleWidths[sample] = percent >= 100 ? 100 : percent;
+        percentSum += percent;
+      }
+    }
+    return sampleWidths;
+  }
+
   @override
   Widget build(BuildContext context) {
-    var selectedSeqPlatform = Provider.of<SelectedSeqPlatform>(context);
-    var selectedSamples = Provider.of<SelectedSamples>(context);
-    var samplesLoads = <Color, int>{};
+    var selectedSeqPlatform = SelectedSeqPlatformNotifier.of(context);
+    var selectedSamples = SelectedSamplesNotifier.of(context);
+    var sampleWidths = <Sample, int>{};
     if (selectedSeqPlatform.params != null) {
-      samplesLoads.addAll({
-        for (var s in selectedSamples) s.color: calcSamplePercent(s, selectedSeqPlatform.params!)
-      });
+      sampleWidths = _calcSampleWidths(selectedSamples, selectedSeqPlatform.params!);
     }
     return Column(children: [
       Padding(
@@ -48,17 +65,17 @@ class SampleLoadBar extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(em(context, 0.3, 5)),
             border: Border.all(
-              color: _calcBorderColor(samplesLoads.values),
+              color: _calcBorderColor(sampleWidths.values),
               width: em(context, 0.2, 3),
             ),
           ),
           child: LayoutBuilder(builder: (BuildContext lbContext, BoxConstraints constraints) {
             return Row(
               children: [
-                for (var e in samplesLoads.entries)
+                for (var e in sampleWidths.entries)
                   AnimatedContainer(
                     duration: const Duration(seconds: 2),
-                    color: e.key,
+                    color: e.key.color,
                     width: 0.01 * e.value * constraints.maxWidth,
                     alignment: Alignment.centerLeft,
                     height: 50,

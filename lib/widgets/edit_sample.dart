@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/bp.dart';
-import '../common/validators.dart';
-import '../models/sample.dart';
+
 import './em.dart';
 import './responsive_layout.dart';
+import './sample_list.dart';
+import '../common/validators.dart';
+import '../models/bp.dart';
+import '../models/sample.dart';
 
 class EditSample extends StatelessWidget {
   final Sample sample;
@@ -14,7 +15,7 @@ class EditSample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var selectedSamples = Provider.of<SelectedSamples>(context, listen: false);
+    var selectedSamples = SelectedSamplesNotifier.of(context, listen: false);
 
     Widget _buildSampleNumField() {
       return Padding(
