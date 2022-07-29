@@ -37,7 +37,7 @@ class SampleLoadBar extends StatelessWidget {
         sampleWidths[sample] = 0;
       } else {
         var percent = calcSamplePercent(sample, params);
-        sampleWidths[sample] = percent >= 100 ? 100 : percent;
+        sampleWidths[sample] = percent + percentSum >= 100 ? 100 - percentSum : percent;
         percentSum += percent;
       }
     }
