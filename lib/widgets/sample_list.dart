@@ -124,9 +124,10 @@ class WideSampleItem extends StatelessWidget {
           child: Text('\u{00A0}${calcSampleLoad(sample, seqParams).toOptimalString()} '
               '(${calcSamplePercent(sample, seqParams)}%)')),
       Expanded(
+          flex: 2, child: Text('\u{00A0}${sample.type!.isCoverageX ? 'x' : ''}${sample.coverage}')),
+      Expanded(
           flex: 2,
-          child: Text('\u{00A0}${sample.type!.isCoverageX ? 'x' : ''}${sample.coverage}')),
-      if (sample.size != null) Expanded(flex: 2, child: Text('\u{00A0}${sample.size}')),
+          child: (sample.size != null) ? Text('\u{00A0}${sample.size}') : const SizedBox.shrink()),
       if (!isRemoved) Expanded(flex: 1, child: EditButton(sample: sample)),
       if (!isRemoved) Expanded(flex: 1, child: DeleteButton(sample: sample)),
     ]);
