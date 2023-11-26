@@ -1,6 +1,11 @@
 ![CI Status](https://github.com/vogdb/ngs-run-calculator-flutter/actions/workflows/ci.yml/badge.svg)
 ![gh-pages](https://github.com/vogdb/ngs-run-calculator-flutter/actions/workflows/gh-pages.yml/badge.svg)
 
+## Build
+```bash
+flutter build appbundle
+```
+
 ## About
 The Flutter implementation of the React app [ngs-run-calculator](https://github.com/vogdb/ngs-run-calculator). 
 
